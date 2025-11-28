@@ -1,1 +1,18 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/XD-ACkNn)
+# Projeto Java of Empires
+### Instituto Federal de Santa Catarina (IFSC)
+### Disciplina de POO
+### Docente: Sérgio Prolo
+### Discentes: Gelson Junior e Gustavo Ribeiro
+
+## Ferramentas
+
+- Linguagem: Java 
+- Paradigma Programação Orientada a Objeto
+- Projeto gradle
+
+
+## Licença
+
+Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
