@@ -1,6 +1,16 @@
 package ifsc.joe.domain.impl;
 
-public class Arqueiro {
+import ifsc.joe.api.Coletador;
+import ifsc.joe.api.Guerreiro;
+import ifsc.joe.enums.Recursos;
 
-    public static final String NOME_ARQUEIRO = "Arqueiro";
-}
+import.java.util.Set;
+
+public class Arqueiro extends Personagem implements Coletador, Guerreiro {
+
+    public static final  Set<Recursos> COLETAVEIS;
+
+    static {
+        COLETAVEIS = Set.of(Recursos.COMIDA, Recursos.OURO, Recursos.MADEIRA);
+    }
+
