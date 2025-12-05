@@ -1,14 +1,26 @@
 package ifsc.joe.domain.impl;
 
+import ifsc.joe.consts.Constantes;
 import ifsc.joe.enums.Direcao;
+import ifsc.joe.enums.Recursos;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
+import java.util.Set;
 
 public class Aldeao {
 
     public static final String NOME_IMAGEM = "aldeao";
+
+    public static final Set<Recursos> COLETAVEIS;
+
+    static {
+        COLETAVEIS = Set.of(Recursos.COMIDA, Recursos.OURO, Recursos.MADEIRA);
+    }
+
+    private int comidaColetada;
+    private int madeiraColetada;
 
     private int posX, posY;
     private boolean atacando;
@@ -20,6 +32,7 @@ public class Aldeao {
         this.posY = y;
         this.atacando = false;
     }
+
 
     /**
      * Desenhando o Aldeão, nas coordenadas X e Y, com a imagem 'icone'
@@ -70,3 +83,4 @@ public class Aldeao {
     }
 
 }
+
