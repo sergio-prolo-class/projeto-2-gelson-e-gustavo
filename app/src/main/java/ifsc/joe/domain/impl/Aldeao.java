@@ -6,20 +6,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class Aldeao {
+public class Aldeao extends Personagem {
 
     public static final String NOME_IMAGEM = "aldeao";
 
-    private int posX, posY;
-    private boolean atacando;
-    private Image icone;
-
-    public Aldeao(int x, int y) {
+    protected Aldeao(int x, int y) {
+        super(x,y);
         this.icone = this.carregarImagem(NOME_IMAGEM);
-        this.posX = x;
-        this.posY = y;
         this.atacando = false;
+        this.vida = 0;
+        this.ataque = 0;
+        this.velocidade = 0;
     }
+
+
+//    public Aldeao(int x, int y) {
+//        this.icone = this.carregarImagem(NOME_IMAGEM);
+//        this.posX = x;
+//        this.posY = y;
+//        this.atacando = false;
+//    }
 
     /**
      * Desenhando o Aldeão, nas coordenadas X e Y, com a imagem 'icone'

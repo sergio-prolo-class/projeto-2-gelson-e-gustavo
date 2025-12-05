@@ -1,15 +1,25 @@
 package ifsc.joe.domain.impl;
 
+import java.awt.*;
+
 public abstract class Personagem {
 
     protected int vida;
     protected double velocidade;
     protected int ataque;
+    protected int posX, posY;
+    protected Image icone;
+    protected boolean atacando;
 
-    protected Personagem(int vida, int ataque, double velocidade) {
+    protected Personagem(int vida, int ataque, double velocidade, int posX, int posY) {
         this.vida = Math.max(vida, 0);
         this.ataque = Math.max(ataque, 0);
         this.velocidade = Math.max(velocidade, 0);
+    }
+
+    protected Personagem(int x,int y){
+        this.posX = x;
+        this.posY = y;
     }
 
     public String mover() {
