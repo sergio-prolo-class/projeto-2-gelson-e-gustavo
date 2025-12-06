@@ -83,6 +83,10 @@ public abstract class Personagem {
         );
     }
 
+    public void atacar() {
+        this.atacando = !this.atacando;
+    }
+
     // Acessos
     public final int getAtaque() {
         return ataque;

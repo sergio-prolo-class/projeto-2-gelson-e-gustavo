@@ -43,7 +43,7 @@ public class PainelControles {
     private void configurarListeners() {
         configurarBotoesMovimento();
         configurarBotoesCriacao();
-        configurarBotaoAtaque();
+        //configurarBotaoAtaque();
     }
 
     /**
@@ -67,18 +67,17 @@ public class PainelControles {
             mostrarMensagemNaoImplementado("Criar Arqueiro");
         });
 
-        bCriaCavaleiro.addActionListener(e -> {
-            //TODO: Implementar criação de cavaleiro
-            mostrarMensagemNaoImplementado("Criar Cavaleiro");
-        });
+        bCriaCavaleiro.addActionListener(e -> criarCavaleiroAleatorio());
+
+
     }
 
     /**
      * Configura o listener do botão de ataque
      */
-    private void configurarBotaoAtaque() {
-        atacarButton.addActionListener(e -> getTela().atacarAldeoes());
-    }
+//    private void configurarBotaoAtaque() {
+//        atacarButton.addActionListener(e -> getTela().atacarAldeoes());
+//    }
 
     /**
      * Cria um aldeão em posição aleatória na tela.
@@ -89,6 +88,14 @@ public class PainelControles {
         int posY = sorteio.nextInt(painelTela.getHeight() - PADDING);
 
         getTela().criarAldeao(posX, posY);
+    }
+
+    private void criarCavaleiroAleatorio() {
+        final int PADDING = 50;
+        int posX = sorteio.nextInt(painelTela.getWidth() - PADDING);
+        int posY = sorteio.nextInt(painelTela.getHeight() - PADDING);
+
+        getTela().criarCavaleiro(posX, posY);
     }
 
     /**

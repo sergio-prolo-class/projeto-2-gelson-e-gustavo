@@ -24,9 +24,7 @@ public class Aldeao extends Personagem {
 
 
 
-    public void atacar() {
-        this.atacando = !this.atacando;
-    }
+
 
 
 
