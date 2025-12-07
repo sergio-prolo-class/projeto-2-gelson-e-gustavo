@@ -21,13 +21,18 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
     private int flechas;
     private int madeiraColetada;
 
-    public Arqueiro() {
-        super(Constantes.ARQUEIRO_VIDA_INICIAL,
-                Constantes.ARQUEIRO_ATAQUE,
-                Constantes.ARQUEIRO_VELOCIDADE);
-        this.flechas = Constantes.ARQUEIRO_FLECHAS_INICIAL;
-        this.madeiraColetada = 0;
+    public Arqueiro(int x, int y) {
+        super(x, y);
+
     }
+
+//    public Arqueiro() {
+//        super(Constantes.ARQUEIRO_VIDA_INICIAL,
+//                Constantes.ARQUEIRO_ATAQUE,
+//                Constantes.ARQUEIRO_VELOCIDADE);
+//        this.flechas = Constantes.ARQUEIRO_FLECHAS_INICIAL;
+//        this.madeiraColetada = 0;
+//    }
 
     @Override
     public boolean coletar(Recursos recursos) {
@@ -37,15 +42,8 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
     }
 
     @Override
-    public String atacar(Personagem alvo) {
-        if (this.flechas-- <= 0) {
-            return "O arqueiro está sem flechas";
-        }
-        return String.format(
-                "O arqueiro ataca com %d de força.%n\tResultado: %s%n",
-                this.ataque,
-                alvo.sofrerDano(this.ataque)
-        );
+    public void atacar(Personagem alvo) {
+
     }
     public String produzirFlechas() {
         if (this.madeiraColetada == 0) return "Arqueiro sem madeira para produção!";
