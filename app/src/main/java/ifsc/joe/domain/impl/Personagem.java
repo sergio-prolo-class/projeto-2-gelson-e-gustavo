@@ -22,9 +22,7 @@ public abstract class Personagem {
         this.posX = x;
         this.posY = y;
         this.nomeImagem = this.getClass().getSimpleName().toLowerCase();
-        this.vida = 0;
-        this.ataque = 0;
-        this.velocidade = 0;
+
 
     }
 
@@ -83,9 +81,6 @@ public abstract class Personagem {
         );
     }
 
-    public void atacar() {
-        this.atacando = !this.atacando;
-    }
 
     // Acessos
     public final int getAtaque() {
