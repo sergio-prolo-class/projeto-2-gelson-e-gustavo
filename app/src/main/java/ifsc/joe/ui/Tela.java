@@ -75,14 +75,14 @@ public class Tela extends JPanel {
     /**
      * Altera o estado do aldeão de atacando para não atacando e vice-versa
      */
-    public void atacarAldeoes() {
-
-        //TODO preciso ser melhorado
-
-
-        this.personagem.forEach(Personagem :: atacar);
-
-        // Fazendo o JPanel ser redesenhado
-        this.repaint();
-    }
+//    public void atacarAldeoes() {
+//
+//        //TODO preciso ser melhorado
+//
+//
+//        this.personagem.forEach(Personagem :: atacar);
+//
+//        // Fazendo o JPanel ser redesenhado
+//        this.repaint();
+//    }
 }
