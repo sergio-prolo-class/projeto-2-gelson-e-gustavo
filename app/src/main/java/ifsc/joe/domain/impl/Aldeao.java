@@ -28,6 +28,7 @@ public class Aldeao extends Personagem implements Coletador, ComMontaria {
         this.vida = Constantes.ALDEAO_VIDA_INICIAL;
         this.ataque = Constantes.ALDEAO_ATAQUE;
         this.velocidade = Constantes.ALDEAO_VELOCIDADE;
+        this.alcance = Constantes.ALDEAO_ALCANCE;
         this.isMontado = false;
     }
 
