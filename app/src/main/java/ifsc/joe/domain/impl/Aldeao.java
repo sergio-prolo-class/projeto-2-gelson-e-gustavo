@@ -24,11 +24,11 @@ public class Aldeao extends Personagem implements Coletador, ComMontaria {
     private boolean isMontado;
 
     public Aldeao(int x, int y) {
-        super(x,y);
-        this.vida = Constantes.ALDEAO_VIDA_INICIAL;
-        this.ataque = Constantes.ALDEAO_ATAQUE;
-        this.velocidade = Constantes.ALDEAO_VELOCIDADE;
-        this.alcance = Constantes.ALDEAO_ALCANCE;
+        super(x,y,
+                Constantes.ALDEAO_VIDA_INICIAL,Constantes.ALDEAO_ATAQUE,
+                Constantes.ALDEAO_VELOCIDADE,Constantes.ALDEAO_ALCANCE);
+
+
         this.isMontado = false;
     }
 

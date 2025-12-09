@@ -17,6 +17,8 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
                 Constantes.CAVALEIRO_VELOCIDADE,
                 Constantes.CAVALEIRO_ALCANCE);
 
+        this.vida = 1;
+
         this.montado = true;
         this.nomeImagem = "cavaleiro_montado";
 

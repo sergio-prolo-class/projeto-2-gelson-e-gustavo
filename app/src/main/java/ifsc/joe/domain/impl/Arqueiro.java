@@ -22,7 +22,11 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
     private int madeiraColetada;
 
     public Arqueiro(int x, int y) {
-        super(x, y);
+        super(x, y,Constantes.ARQUEIRO_VIDA_INICIAL,
+               Constantes.ARQUEIRO_ATAQUE,
+                Constantes.ARQUEIRO_VELOCIDADE,Constantes.ARQUEIRO_ALCANCE);
+        this.flechas = Constantes.ARQUEIRO_FLECHAS_INICIAL;
+        this.madeiraColetada = 0;
 
     }
 
