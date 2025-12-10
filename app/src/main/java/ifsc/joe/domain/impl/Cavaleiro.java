@@ -92,5 +92,10 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
             }
         }).start();
     }
+
+    @Override
+    protected void receberDano(int dano) {
+
     }
+}
 

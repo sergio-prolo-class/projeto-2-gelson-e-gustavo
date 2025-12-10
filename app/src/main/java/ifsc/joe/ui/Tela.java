@@ -1,6 +1,7 @@
 package ifsc.joe.ui;
 
 import ifsc.joe.domain.impl.Aldeao;
+import ifsc.joe.domain.impl.Arqueiro;
 import ifsc.joe.domain.impl.Cavaleiro;
 import ifsc.joe.domain.impl.Personagem;
 import ifsc.joe.enums.Direcao;
@@ -56,9 +57,7 @@ public class Tela extends JPanel {
             case "CAVALEIRO":
                 return personagem instanceof Cavaleiro;
             case "ARQUEIRO":
-                // quando implementar Arqueiro
-                // return personagem instanceof Arqueiro;
-                return false; // Temporário
+                return personagem instanceof Arqueiro;
             default:
                 return true;
         }
@@ -151,6 +150,14 @@ public class Tela extends JPanel {
         c.desenhar(super.getGraphics(), this);
         this.personagem.add(c);
     }
+
+    public void criarArqueiro(int x, int y) {
+        Arqueiro c = new Arqueiro(x, y);
+        c.desenhar(super.getGraphics(), this);
+        this.personagem.add(c);
+    }
+
+
 
     public void movimentarPersonagens(Direcao direcao) {
         int movidos = 0;

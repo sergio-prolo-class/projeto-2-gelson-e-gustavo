@@ -30,25 +30,43 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
 
     }
 
-//    public Arqueiro() {
-//        super(Constantes.ARQUEIRO_VIDA_INICIAL,
-//                Constantes.ARQUEIRO_ATAQUE,
-//                Constantes.ARQUEIRO_VELOCIDADE);
-//        this.flechas = Constantes.ARQUEIRO_FLECHAS_INICIAL;
-//        this.madeiraColetada = 0;
-//    }
 
     @Override
-    public boolean coletar(Recursos recursos) {
-        if (!COLETAVEIS.contains(recursos)) return false;
-        if (recursos == Recursos.MADEIRA) this.madeiraColetada++;
-        return true;
+    public boolean coletar(Recursos recurso) {
+        if (recurso == Recursos.MADEIRA) {
+            this.madeiraColetada++;
+            System.out.println("[ARQUEIRO] Madeira coletada! Total: " + this.madeiraColetada);
+            return true;
+        }
+
+        // Se não for madeira, não coleta
+        System.out.println("[ARQUEIRO] Não coleta " + recurso + "! (Só coleta MADEIRA)");
+        return false;
     }
 
     @Override
     public void atacar(Personagem alvo) {
+        if (this.flechas <= 0) {
+            System.out.println("Arqueiro sem flechas para atacar!");
+            return;
+        }
 
+        this.flechas--;
+        int dano = calcularDano();
+        alvo.receberDano(dano);
+
+        System.out.printf("Arqueiro atacou %s causando %d de dano! Flechas restantes: %d%n",
+                alvo.getNome(), dano, this.flechas);
     }
+
+    private int calcularDano() {
+        // Exemplo: dano base + bônus por nível ou atributos
+        int danoBase = 10;
+        // Adicione sua lógica específica aqui
+        return danoBase;
+    }
+
+
     public String produzirFlechas() {
         if (this.madeiraColetada == 0) return "Arqueiro sem madeira para produção!";
         this.madeiraColetada--;
@@ -60,6 +78,13 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
         this.flechas +=  quant;
         return String.format("Arqueiro agora com %d flechas%n", quant);
     }
+
+    @Override
+    protected void receberDano(int dano) {
+
+    }
+
+
 }
 
 
