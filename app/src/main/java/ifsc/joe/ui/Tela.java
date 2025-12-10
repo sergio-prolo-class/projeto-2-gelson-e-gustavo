@@ -7,12 +7,15 @@ import ifsc.joe.enums.Direcao;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Tela extends JPanel {
 
     private final Set<Personagem> personagem;
+    private String filtroAtual = "TODOS";
 
     public Tela() {
 
@@ -39,6 +42,97 @@ public class Tela extends JPanel {
         g.dispose();
     }
 
+    public void setFiltro(String filtro) {
+        this.filtroAtual = filtro.toUpperCase();
+        repaint();
+    }
+    private boolean selecionarFiltro(Personagem personagem) {
+
+        switch (filtroAtual) {
+            case "TODOS":
+                return true;
+            case "ALDEAO":
+                return personagem instanceof Aldeao;
+            case "CAVALEIRO":
+                return personagem instanceof Cavaleiro;
+            case "ARQUEIRO":
+                // quando implementar Arqueiro
+                // return personagem instanceof Arqueiro;
+                return false; // Temporário
+            default:
+                return true;
+        }
+    }
+
+
+
+    public void atacarPersonagens() {
+
+        int ataquesRealizados = 0;
+
+        // Limpa mortos antes do ataque
+        limparMortos();
+
+        // Lista de todos os personagens
+        Personagem[] todosPersonagens = personagem.toArray(new Personagem[0]);
+
+        for (Personagem atacante : personagem) {
+            // Só ataca se estiver vivo
+            if (atacante.estaVivo() && selecionarFiltro(atacante) && atacante instanceof ifsc.joe.api.Guerreiro) {
+
+                // Procura  alvos no alcance
+                List<Personagem> alvos = encontrarAlvo(atacante, todosPersonagens);
+
+                // Ataca cada alvo
+                for (Personagem alvo : alvos) {
+                    ((ifsc.joe.api.Guerreiro) atacante).atacar(alvo);
+                    ataquesRealizados++;
+                }
+            }
+        }
+
+        // Limpa mortos apos  ataque
+        limparMortos();
+        repaint();
+    }
+
+
+
+    public void alternarMontariaCavaleiros() {
+        int cavaleirosAlterados = 0;
+
+        for (Personagem p : personagem) {
+            if (p instanceof Cavaleiro && p.estaVivo()) {
+                ((Cavaleiro) p).alternarMontado();
+                cavaleirosAlterados++;
+            }
+        }
+
+        if (cavaleirosAlterados > 0) {
+            repaint();
+        }
+    }
+
+    /**
+     * Encontra um alvo para o atacante
+     */
+    private List<Personagem> encontrarAlvo(Personagem atacante, Personagem[] todosPersonagens) {
+        List<Personagem> alvos = new ArrayList<>();
+        for (Personagem alvo : todosPersonagens) {
+            if (alvo == atacante) continue;
+            if (!alvo.estaVivo()) continue;
+            if (atacante.estaNoAlcance(alvo)) {
+                alvos.add(alvo);
+            }
+        }
+        return alvos;
+    }
+
+    public void limparMortos() {
+        personagem.removeIf(p -> !p.estaVivo());
+        repaint();
+    }
+
     /**
      * Cria um aldeao nas coordenadas X e Y, desenha-o neste JPanel
      * e adiciona o mesmo na lista de aldeoes
@@ -58,19 +152,33 @@ public class Tela extends JPanel {
         this.personagem.add(c);
     }
 
+    public void movimentarPersonagens(Direcao direcao) {
+        int movidos = 0;
+        for (Personagem p : personagem) {
+            if (p.estaVivo() && selecionarFiltro(p)) {
+                p.mover(direcao, getWidth(), getHeight());
+                movidos++;
+            }
+        }
+        if (movidos > 0) {
+            repaint();
+        }
+    }
+
+
     /**
      * Atualiza as coordenadas X ou Y de todos os aldeoes
      *
      * @param direcao direcao para movimentar
      */
-    public void movimentarAldeoes(Direcao direcao) {
-        //TODO preciso ser melhorado
-
-        this.personagem.forEach(aldeao -> aldeao.mover(direcao, this.getWidth(), this.getHeight()));
-
-        // Depois que as coordenadas foram atualizadas é necessário repintar o JPanel
-        this.repaint();
-    }
+//    public void movimentarAldeoes(Direcao direcao) {
+//        //TODO preciso ser melhorado
+//
+//        this.personagem.forEach(aldeao -> aldeao.mover(direcao, this.getWidth(), this.getHeight()));
+//
+//        // Depois que as coordenadas foram atualizadas é necessário repintar o JPanel
+//        this.repaint();
+//    }
 
     /**
      * Altera o estado do aldeão de atacando para não atacando e vice-versa

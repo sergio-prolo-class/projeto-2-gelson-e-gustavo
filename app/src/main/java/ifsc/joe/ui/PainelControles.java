@@ -3,6 +3,7 @@ package ifsc.joe.ui;
 import ifsc.joe.enums.Direcao;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -13,6 +14,8 @@ public class PainelControles {
 
     private final Random sorteio;
     private Tela tela;
+
+    private ButtonGroup grupoFiltro;
 
     // Componentes da interface (gerados pelo Form Designer)
     private JPanel painelPrincipal;
@@ -31,6 +34,7 @@ public class PainelControles {
     private JButton buttonBaixo;
     private JButton buttonDireita;
     private JLabel logo;
+    private JButton montarButton;
 
     public PainelControles() {
         this.sorteio = new Random();
@@ -41,19 +45,69 @@ public class PainelControles {
      * Configura todos os listeners dos botões.
      */
     private void configurarListeners() {
+        configurarRadioButtons();
         configurarBotoesMovimento();
         configurarBotoesCriacao();
-        //configurarBotaoAtaque();
+        configurarBotaoAtaque();
+//        configurarBotaoMontar();
     }
+
+    private void configurarRadioButtons() {
+        todosRadioButton.addActionListener(e -> {
+
+            if (todosRadioButton.isSelected()) {
+                getTela().setFiltro("TODOS");
+            }
+
+        }
+        );
+
+        aldeaoRadioButton.addActionListener(e -> {
+
+            if (aldeaoRadioButton.isSelected()) {
+                getTela().setFiltro("ALDEAO");
+            }
+        });
+
+        cavaleiroRadioButton.addActionListener(e -> {
+
+
+            if (cavaleiroRadioButton.isSelected()) {
+                getTela().setFiltro("CAVALEIRO");
+            }
+        });
+    }
+
+    private void configurarBotaoAtaque() {
+        atacarButton.addActionListener(e -> {
+            // Executa ataque com filtro
+            getTela().atacarPersonagens();
+
+            // visual
+            atacarButton.setBackground(Color.RED);
+            atacarButton.setForeground(Color.WHITE);
+
+            // Volta ao normal após 0.3 segundos
+            Timer timer = new Timer(300, evt -> {
+                atacarButton.setBackground(null);
+                atacarButton.setForeground(null);
+            });
+            timer.setRepeats(false);
+            timer.start();
+        });
+    }
+
 
     /**
      * Configura todos os listeners dos botões de movimento
      */
     private void configurarBotoesMovimento() {
-        buttonCima.addActionListener(e -> getTela().movimentarAldeoes(Direcao.CIMA));
-        buttonBaixo.addActionListener(e -> getTela().movimentarAldeoes(Direcao.BAIXO));
-        buttonEsquerda.addActionListener(e -> getTela().movimentarAldeoes(Direcao.ESQUERDA));
-        buttonDireita.addActionListener(e -> getTela().movimentarAldeoes(Direcao.DIREITA));
+         // buttonCima.addActionListener(e -> getTela().movimentarAldeoes(Direcao.CIMA));
+
+        buttonCima.addActionListener(e -> getTela().movimentarPersonagens(Direcao.CIMA));
+        buttonBaixo.addActionListener(e -> getTela().movimentarPersonagens(Direcao.BAIXO));
+        buttonEsquerda.addActionListener(e -> getTela().movimentarPersonagens(Direcao.ESQUERDA));
+        buttonDireita.addActionListener(e -> getTela().movimentarPersonagens(Direcao.DIREITA));
     }
 
     /**
