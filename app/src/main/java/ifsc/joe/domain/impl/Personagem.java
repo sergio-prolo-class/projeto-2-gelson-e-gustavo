@@ -47,7 +47,7 @@ public abstract class Personagem {
         }
 
         // Se vivo, desenha sprite normal ou atacando
-        String sufixo = atacando ? "_atacando" : "";
+        String sufixo = atacando ? "2" : "";
         this.icone = carregarImagem(nomeImagem + sufixo);
 
         if (this.icone != null) {

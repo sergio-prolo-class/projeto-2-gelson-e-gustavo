@@ -25,7 +25,7 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
     // Cavaleiro desmontado ataque reduz
     @Override
     public void alternarMontado() {
-       // this.montado = !montado;
+      //  this.montado = !montado;
 
         if (!montado) {
             montado = true;
@@ -56,7 +56,7 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
 
     @Override
     public void atacar(Personagem alvo) {
-
+        System.out.println("Cavaleiro atacando! Vida do alvo antes " + alvo.getVida());
         // Verifica se pode atacar
         if (!this.estaVivo()) {
             return; //  morto não ataca
@@ -91,6 +91,9 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
                 // Ignora interrupção
             }
         }).start();
+
+        System.out.println("Vida do alvo " + alvo.getVida());
+        System.out.println("atacando" + atacando);
     }
     }
 

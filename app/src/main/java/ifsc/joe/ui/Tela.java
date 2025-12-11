@@ -94,19 +94,20 @@ public class Tela extends JPanel {
 
         // Limpa mortos apos  ataque
         limparMortos();
-        repaint();
+        repaintForce();
     }
 
 
 
-    public void alternarMontariaCavaleiros() {
+    public void alternarMontaria() {
         int cavaleirosAlterados = 0;
 
         for (Personagem p : personagem) {
             if (p instanceof ifsc.joe.api.ComMontaria && p.estaVivo() && selecionarFiltro(p)) {
                 ((ifsc.joe.api.ComMontaria) p).alternarMontado();
                 cavaleirosAlterados++;
-                p.desenhar(super.getGraphics(), this);
+
+
             }
         }
 
@@ -133,6 +134,14 @@ public class Tela extends JPanel {
     public void limparMortos() {
         personagem.removeIf(p -> !p.estaVivo());
         repaint();
+    }
+
+    private void repaintForce() {
+        repaint();
+
+        Timer timer = new Timer(350, e -> repaint());
+        timer.setRepeats(false);
+        timer.start();
     }
 
     /**

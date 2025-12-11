@@ -80,7 +80,7 @@ public class PainelControles {
 
     private void configurarBotaoMontar() {
         montarButton.addActionListener(e -> {
-            getTela().alternarMontariaCavaleiros();
+            getTela().alternarMontaria();
         });
     }
 
@@ -94,7 +94,7 @@ public class PainelControles {
             atacarButton.setForeground(Color.WHITE);
 
             // Volta ao normal após 0.3 segundos
-            Timer timer = new Timer(300, evt -> {
+            Timer timer = new Timer(200, evt -> {
                 atacarButton.setBackground(null);
                 atacarButton.setForeground(null);
             });
