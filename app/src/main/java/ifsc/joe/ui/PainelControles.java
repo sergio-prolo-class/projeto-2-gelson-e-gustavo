@@ -126,7 +126,7 @@ public class PainelControles {
     private void configurarBotoesCriacao() {
         bCriaAldeao.addActionListener(e -> criarAldeaoAleatorio());
 
-        bCriaAldeao.addActionListener(e -> criarArqueiroAleatorio());
+        bCriaArqueiro.addActionListener(e -> criarArqueiroAleatorio());
 
         bCriaCavaleiro.addActionListener(e -> criarCavaleiroAleatorio());
 
