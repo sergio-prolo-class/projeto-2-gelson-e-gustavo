@@ -25,7 +25,7 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
     // Cavaleiro desmontado ataque reduz
     @Override
     public void alternarMontado() {
-        this.montado = !montado;
+       // this.montado = !montado;
 
         if (!montado) {
             montado = true;

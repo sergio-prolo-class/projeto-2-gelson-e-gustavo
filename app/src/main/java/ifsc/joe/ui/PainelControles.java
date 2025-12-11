@@ -49,7 +49,7 @@ public class PainelControles {
         configurarBotoesMovimento();
         configurarBotoesCriacao();
         configurarBotaoAtaque();
-//        configurarBotaoMontar();
+        configurarBotaoMontar();
     }
 
     private void configurarRadioButtons() {
@@ -75,6 +75,12 @@ public class PainelControles {
             if (cavaleiroRadioButton.isSelected()) {
                 getTela().setFiltro("CAVALEIRO");
             }
+        });
+    }
+
+    private void configurarBotaoMontar() {
+        montarButton.addActionListener(e -> {
+            getTela().alternarMontariaCavaleiros();
         });
     }
 

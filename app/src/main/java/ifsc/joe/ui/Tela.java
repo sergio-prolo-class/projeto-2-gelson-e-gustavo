@@ -105,6 +105,7 @@ public class Tela extends JPanel {
             if (p instanceof Cavaleiro && p.estaVivo()) {
                 ((Cavaleiro) p).alternarMontado();
                 cavaleirosAlterados++;
+                p.desenhar(super.getGraphics(), this);
             }
         }
 
