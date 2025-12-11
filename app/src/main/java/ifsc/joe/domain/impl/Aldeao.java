@@ -47,9 +47,11 @@ public class Aldeao extends Personagem implements Coletador, ComMontaria {
         if (!isMontado) {
             isMontado = true;
             this.velocidade = this.velocidade * 2;
+            this.nomeImagem = "aldeao_montado";
         }else  {
             isMontado = false;
             this.velocidade = Constantes.ALDEAO_VELOCIDADE;
+            this.nomeImagem = "aldeao";
         }
 
     }

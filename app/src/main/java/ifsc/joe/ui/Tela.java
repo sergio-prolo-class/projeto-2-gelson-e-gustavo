@@ -87,6 +87,7 @@ public class Tela extends JPanel {
                 for (Personagem alvo : alvos) {
                     ((ifsc.joe.api.Guerreiro) atacante).atacar(alvo);
                     ataquesRealizados++;
+
                 }
             }
         }
@@ -102,8 +103,8 @@ public class Tela extends JPanel {
         int cavaleirosAlterados = 0;
 
         for (Personagem p : personagem) {
-            if (p instanceof Cavaleiro && p.estaVivo()) {
-                ((Cavaleiro) p).alternarMontado();
+            if (p instanceof ifsc.joe.api.ComMontaria && p.estaVivo() && selecionarFiltro(p)) {
+                ((ifsc.joe.api.ComMontaria) p).alternarMontado();
                 cavaleirosAlterados++;
                 p.desenhar(super.getGraphics(), this);
             }
