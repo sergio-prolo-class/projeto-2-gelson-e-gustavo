@@ -39,7 +39,7 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
             return true;
         }
 
-        // Se não for madeira, não coleta
+
         System.out.println("[ARQUEIRO] Não coleta " + recurso + "! (Só coleta MADEIRA)");
         return false;
     }
@@ -60,9 +60,7 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
     }
 
     private int calcularDano() {
-        // Exemplo: dano base + bônus por nível ou atributos
         int danoBase = 10;
-        // Adicione sua lógica específica aqui
         return danoBase;
     }
 
