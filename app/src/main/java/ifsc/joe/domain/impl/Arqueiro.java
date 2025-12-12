@@ -46,49 +46,56 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
 
     @Override
     public void atacar(Personagem alvo) {
-        if (this.flechas <= 0) {
-            System.out.println("Arqueiro sem flechas para atacar!");
-            return;
+        System.out.println("Arqueiro atacando! Vida do alvo antes " + alvo.getVida());
+        // Verifica se pode atacar
+        if (!this.estaVivo()) {
+            return; //  morto não ataca
+        }
+        if (!alvo.estaVivo()) {
+            return; //não ataca mortos
+        }
+        // Verifica alcance
+        double distancia = this.calcularDistancia(alvo);
+        if (distancia > this.getAlcance()) {
+            return; // Fora do alcance
         }
 
-        this.flechas--;
-        int dano = calcularDano();
-        alvo.receberDano(dano);
+//        // cavaleiro naoo ataca outros cavaleiros
+//        if (alvo instanceof Cavaleiro) {
+//            return;
+//        }
 
-        System.out.printf("Arqueiro atacou %s causando %d de dano! Flechas restantes: %d%n",
-                alvo.getNome(), dano, this.flechas);
+        // ataque
+        this.atacando = true;
+        int vidaAntes = alvo.getVida();
+        alvo.sofrerDano(this.getDano());
+
+
+
+        // ataque (dura 0.3 segundos)
+        new Thread(() -> {
+            try {
+                Thread.sleep(300);
+                this.atacando = false;
+            } catch (InterruptedException e) {
+                // Ignora interrupção
+            }
+        }).start();
+
+        System.out.println("Vida do alvo " + alvo.getVida());
+        System.out.println("atacando" + atacando);
     }
 
-    private int calcularDano() {
-        int danoBase = 10;
-        return danoBase;
-    }
-
-
-    public String produzirFlechas() {
-        if (this.madeiraColetada == 0) return "Arqueiro sem madeira para produção!";
-        this.madeiraColetada--;
-        return this.recarregarFlechas(Constantes.ARQUEIRO_FLECHAS_PRODUCAO);
-    }
-
-    public String recarregarFlechas(int quant) {
-        if (quant <= 0) return "Não é possível recarregar flechas negativas!";
-        this.flechas +=  quant;
-        return String.format("Arqueiro agora com %d flechas%n", quant);
+    private int getDano() {
+        return this.ataque;
     }
 
     @Override
     protected void receberDano(int dano) {
-        this.vida -= dano;
-        if (this.vida <=0) {
-            this.vida = 0;
-            System.out.println(getNome() + "morreu");
-        }
-
+    }
     }
 
 
-}
 
 
 
