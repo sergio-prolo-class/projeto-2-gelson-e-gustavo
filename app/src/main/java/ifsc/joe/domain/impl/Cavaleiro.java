@@ -95,5 +95,10 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
         System.out.println("Vida do alvo " + alvo.getVida());
         System.out.println("atacando" + atacando);
     }
+
+    @Override
+    protected void receberDano(int dano) {
+
     }
+}
 

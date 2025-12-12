@@ -55,4 +55,9 @@ public class Aldeao extends Personagem implements Coletador, ComMontaria {
         }
 
     }
+
+    @Override
+    protected void receberDano(int dano) {
+
+    }
 }

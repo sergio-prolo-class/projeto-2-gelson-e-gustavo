@@ -175,4 +175,10 @@ public abstract class Personagem {
                 '}';
     }
 
+    protected abstract void receberDano(int dano);
+
+    protected Object getNome() {
+
+        return null;
+    }
 }
