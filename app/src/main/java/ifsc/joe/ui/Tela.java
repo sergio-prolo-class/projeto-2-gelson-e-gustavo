@@ -8,10 +8,13 @@ import ifsc.joe.enums.Direcao;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
 public class Tela extends JPanel {
 
@@ -61,6 +64,48 @@ public class Tela extends JPanel {
             default:
                 return true;
         }
+    }
+
+    private void configurarTeclado(){
+        addKeyListener(new java.awt.event.KeyAdapter(){
+
+            public void keyPressed(java.awt.event.KeyEvent e){
+                processarTecla(e.getKeyCode());
+            }
+
+        });
+
+    }
+
+    private void processarTecla(int keyCode ){
+
+        switch (keyCode){
+
+            case KeyEvent.VK_W:
+                movimentarPersonagens(Direcao.CIMA);
+                break;
+            case KeyEvent.VK_S:
+                movimentarPersonagens(Direcao.BAIXO);
+                break;
+            case KeyEvent.VK_A:
+                movimentarPersonagens(Direcao.ESQUERDA);
+                break;
+            case KeyEvent.VK_D:
+                movimentarPersonagens(Direcao.DIREITA);
+                break;
+            case KeyEvent.VK_SPACE:
+                atacarPersonagens();
+                break;
+
+
+
+
+
+
+        }
+    repaintForce();
+
+
     }
 
 

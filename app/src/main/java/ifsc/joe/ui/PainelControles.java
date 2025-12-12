@@ -4,7 +4,10 @@ import ifsc.joe.enums.Direcao;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Random;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
 /**
  * Classe responsável por gerenciar os controles e interações da interface.
@@ -85,6 +88,7 @@ public class PainelControles {
             }
         });
     }
+
 
 
 
