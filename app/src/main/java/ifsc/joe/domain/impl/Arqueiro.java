@@ -81,6 +81,11 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
 
     @Override
     protected void receberDano(int dano) {
+        this.vida -= dano;
+        if (this.vida <=0) {
+            this.vida = 0;
+            System.out.println(getNome() + "morreu");
+        }
 
     }
 
