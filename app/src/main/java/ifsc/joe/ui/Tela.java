@@ -1,19 +1,21 @@
 package ifsc.joe.ui;
 
-import ifsc.joe.domain.impl.Aldeao;
-import ifsc.joe.domain.impl.Arqueiro;
-import ifsc.joe.domain.impl.Cavaleiro;
-import ifsc.joe.domain.impl.Personagem;
+import ifsc.joe.domain.impl.*;
 import ifsc.joe.enums.Direcao;
+import ifsc.joe.enums.Recursos;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public class Tela extends JPanel {
+
+    private final List<Coletavel> coletaveis;
+    private int comida = 0;
+    private int madeira = 0;
+    private int ouro = 0;
 
     private final Set<Personagem> personagem;
     private String filtroAtual = "TODOS";
@@ -24,6 +26,49 @@ public class Tela extends JPanel {
 
         this.setBackground(Color.white);
         this.personagem = new HashSet<>();
+        this.coletaveis = new ArrayList<>();
+
+        distribuirColetaveisIniciais();
+    }
+
+    private void distribuirColetaveisIniciais() {
+        Random rand = new Random();
+
+        // Quantidade
+        int qtdComida = 5;
+        int qtdMadeira = 5;
+        int qtdOuro = 5;
+
+        // Distribui COMIDA
+        for (int i = 0; i < qtdComida; i++) {
+            int x = 50 + rand.nextInt(getWidth() - 100);
+            int y = 50 + rand.nextInt(getHeight() - 100);
+            int quantidade = 10 + rand.nextInt(20);
+            coletaveis.add(new Coletavel(Recursos.COMIDA, quantidade, x, y));
+        }
+
+        // Distribui MADEIRA
+        for (int i = 0; i < qtdMadeira; i++) {
+            int x = 50 + rand.nextInt(getWidth() - 100);
+            int y = 50 + rand.nextInt(getHeight() - 100);
+            int quantidade = 8 + rand.nextInt(15);
+            coletaveis.add(new Coletavel(Recursos.MADEIRA, quantidade, x, y));
+        }
+
+        // Distribui OURO
+        for (int i = 0; i < qtdOuro; i++) {
+            int x = 50 + rand.nextInt(getWidth() - 100);
+            int y = 50 + rand.nextInt(getHeight() - 100);
+            int quantidade = 5 + rand.nextInt(10); // 5-15
+            coletaveis.add(new Coletavel(Recursos.OURO, quantidade, x, y));
+        }
+
+        System.out.println("Distribudos " + coletaveis.size() + " coletáveis no mapa");
+    }
+
+    public void adicionarColetavel(Coletavel coletavel) {
+        coletaveis.add(coletavel);
+        repaint();
     }
 
     /**
