@@ -117,10 +117,19 @@ public abstract class Personagem {
         }
     }
     public double calcularDistancia(Personagem outro) {
-        if (outro == null) return Double.MAX_VALUE;
+        if (outro == null || this.icone == null || outro.icone == null) {
+            return Double.MAX_VALUE;
+        }
 
-        int dx = this.posX - outro.posX;
-        int dy = this.posY - outro.posY;
+        int centroX1 = this.posX + this.icone.getWidth(null) / 2;
+        int centroY1 = this.posY + this.icone.getHeight(null) / 2;
+
+        int centroX2 = outro.posX + outro.icone.getWidth(null) / 2;
+        int centroY2 = outro.posY + outro.icone.getHeight(null) / 2;
+
+        int dx = centroX1 - centroX2;
+        int dy = centroY1 - centroY2;
+
         return Math.sqrt(dx * dx + dy * dy);
     }
     public boolean estaNoAlcance(Personagem outro) {

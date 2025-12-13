@@ -60,10 +60,7 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
             return; // Fora do alcance
         }
 
-//        // cavaleiro naoo ataca outros cavaleiros
-//        if (alvo instanceof Cavaleiro) {
-//            return;
-//        }
+
 
         // ataque
         this.atacando = true;
@@ -92,6 +89,7 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
 
     @Override
     protected void receberDano(int dano) {
+        sofrerDano(dano);
     }
     }
 
