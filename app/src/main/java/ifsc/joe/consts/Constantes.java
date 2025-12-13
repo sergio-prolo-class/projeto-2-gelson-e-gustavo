@@ -4,7 +4,7 @@ public final class Constantes {
     public static final int ARQUEIRO_VIDA_INICIAL  = 35;
     public static final int ARQUEIRO_ATAQUE = 2;
     public static final double ARQUEIRO_VELOCIDADE = 3.0;
-    public static final int ARQUEIRO_FLECHAS_INICIAL = 1;
+    public static final int ARQUEIRO_FLECHAS_INICIAL = 3;
     public static final int ARQUEIRO_FLECHAS_PRODUCAO = 10;
     public static final int ARQUEIRO_ALCANCE = 120;
 

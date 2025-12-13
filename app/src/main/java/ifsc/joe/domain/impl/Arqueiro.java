@@ -47,6 +47,11 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
     @Override
     public void atacar(Personagem alvo) {
         System.out.println("Arqueiro atacando! Vida do alvo antes " + alvo.getVida());
+
+        if (this.flechas <= 0) {
+            System.out.println("[ARQUEIRO] sem flechas! não pode atacar.");
+            return;
+        }
         // Verifica se pode atacar
         if (!this.estaVivo()) {
             return; //  morto não ataca
@@ -64,6 +69,10 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
 
         // ataque
         this.atacando = true;
+
+        this.flechas--;
+        System.out.println("[ARQUEIRO] flecha disparada! flechas restantes" + this.flechas);
+
         int vidaAntes = alvo.getVida();
         alvo.sofrerDano(this.getDano());
 
