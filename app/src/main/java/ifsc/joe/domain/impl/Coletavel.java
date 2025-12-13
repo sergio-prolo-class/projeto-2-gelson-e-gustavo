@@ -81,10 +81,30 @@ public class Coletavel {
             }
         }
 
+//    private Image carregarImagem(String imagem) {
+//        return new ImageIcon(Objects.requireNonNull(
+//                getClass().getClassLoader().getResource("./"+imagem+".png")
+//        )).getImage();
+//    }
+
     private Image carregarImagem(String imagem) {
-        return new ImageIcon(Objects.requireNonNull(
-                getClass().getClassLoader().getResource("./"+imagem+".png")
-        )).getImage();
+        java.net.URL url = getClass().getClassLoader().getResource("./" + imagem + ".png");
+
+
+        if (url == null) {
+            System.err.println("Imagem não encontrada: " + imagem + ".png");
+
+            if (imagem.contains("coletavel")) {
+
+                url = getClass().getClassLoader().getResource("./coletavel_comida1.png");
+            if (url == null) {
+                    System.err.println("Imagem fallback também não encontrada");
+                    return null;
+                }
+            }
+        }
+
+        return new ImageIcon(url).getImage();
     }
 
         public void desenhar(Graphics g) {

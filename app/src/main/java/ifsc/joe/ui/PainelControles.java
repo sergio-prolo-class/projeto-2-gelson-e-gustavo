@@ -38,12 +38,31 @@ public class PainelControles {
     private JButton buttonDireita;
     private JLabel logo;
     private JButton montarButton;
+    private JLabel labelRecursos;
 
     public PainelControles() {
         this.sorteio = new Random();
         configurarListeners();
         configurarTeclado();
+//        criarLabelRecursos();
+//        configurarBotaoColetar();
     }
+
+//    private void criarLabelRecursos() {
+//        labelRecursos = new JLabel("Recursos: ");
+//        labelRecursos.setFont(new Font("Arial", Font.BOLD, 12));
+//        labelRecursos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//        painelLateral.add(labelRecursos, BorderLayout.SOUTH);
+//    }
+//
+//    private void configurarBotaoColetar() {
+//        JButton coletarButton = new JButton("Verificar Coleta");
+//        coletarButton.addActionListener(e -> {
+//            getTela().verificarColetaveis();
+//            //atualizarDisplayRecursos();
+//        });
+//        painelLateral.add(coletarButton);
+//    }
 
     /**
      * Configura todos os listeners dos botões.
@@ -54,6 +73,7 @@ public class PainelControles {
         configurarBotoesCriacao();
         configurarBotaoAtaque();
         configurarBotaoMontar();
+
     }
 
     private void configurarRadioButtons() {

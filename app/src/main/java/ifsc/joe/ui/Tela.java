@@ -22,6 +22,7 @@ public class Tela extends JPanel {
     private int comida = 0;
     private int madeira = 0;
     private int ouro = 0;
+    private boolean coletaveisInicializados = false;
 
     private final Set<Personagem> personagem;
     private String filtroAtual = "TODOS";
@@ -34,48 +35,50 @@ public class Tela extends JPanel {
         this.personagem = new HashSet<>();
         this.coletaveis = new ArrayList<>();
 
-        distribuirColetaveisIniciais();
+       // distribuirColetaveisIniciais();
     }
 
-    private void distribuirColetaveisIniciais() {
-        Random rand = new Random();
 
-        // Quantidade
-        int qtdComida = 5;
-        int qtdMadeira = 5;
-        int qtdOuro = 5;
-
-        // Distribui COMIDA
-        for (int i = 0; i < qtdComida; i++) {
-            int x = 50 + rand.nextInt(getWidth() - 100);
-            int y = 50 + rand.nextInt(getHeight() - 100);
-            int quantidade = 10 + rand.nextInt(20);
-            coletaveis.add(new Coletavel(Recursos.COMIDA, quantidade, x, y));
-        }
-
-        // Distribui MADEIRA
-        for (int i = 0; i < qtdMadeira; i++) {
-            int x = 50 + rand.nextInt(getWidth() - 100);
-            int y = 50 + rand.nextInt(getHeight() - 100);
-            int quantidade = 8 + rand.nextInt(15);
-            coletaveis.add(new Coletavel(Recursos.MADEIRA, quantidade, x, y));
-        }
-
-        // Distribui OURO
-        for (int i = 0; i < qtdOuro; i++) {
-            int x = 50 + rand.nextInt(getWidth() - 100);
-            int y = 50 + rand.nextInt(getHeight() - 100);
-            int quantidade = 5 + rand.nextInt(10); // 5-15
-            coletaveis.add(new Coletavel(Recursos.OURO, quantidade, x, y));
-        }
-
-        System.out.println("Distribudos " + coletaveis.size() + " coletáveis no mapa");
-    }
 
     public void adicionarColetavel(Coletavel coletavel) {
         coletaveis.add(coletavel);
         repaint();
     }
+    private void distribuirColetaveisIniciais() {
+        Random rand = new Random();
+        int largura = getWidth();
+        int altura = getHeight();
+
+        System.out.println("📐 Inicializando coletáveis em tela " +
+                largura + "x" + altura);
+
+        // Limpa qualquer coletável antigo (por segurança)
+        coletaveis.clear();
+
+        // Distribui coletáveis aleatórios
+        for (int i = 0; i < 15; i++) {
+            Recursos tipo = Recursos.values()[rand.nextInt(Recursos.values().length)];
+
+            // ⭐ GARANTE bounds positivos
+            int maxX = Math.max(1, largura - 100);
+            int maxY = Math.max(1, altura - 100);
+
+            int x = 50 + rand.nextInt(maxX);
+            int y = 50 + rand.nextInt(maxY);
+            int quantidade = 10 + rand.nextInt(30);
+
+            coletaveis.add(new Coletavel(tipo, quantidade, x, y));
+        }
+
+        System.out.println(coletaveis.size() + " coletáveis distribuídos");
+    }
+
+
+//    public void redistribuirColetaveis() {
+//        coletaveisInicializados = false;
+//        coletaveis.clear();
+//        repaint(); // Vai chamar paint() que vai redistribuir
+//    }
 
     /**
      * Method que invocado sempre que o JPanel precisa ser resenhado.
@@ -85,15 +88,117 @@ public class Tela extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
+
+        if (!coletaveisInicializados && getWidth() > 0 && getHeight() > 0) {
+            distribuirColetaveisIniciais();
+            coletaveisInicializados = true;
+        }
+
+        for (Coletavel c : coletaveis) {
+            if (!c.isColetado()) {
+                c.desenhar(g);
+            }
+        }
        for (Personagem p : personagem) {
            if (p.estaVivo() || p.isAcabouDeMorrer()){
                p.desenhar(g,this);
            }
        }
 
+        desenharRecursos(g);
         // liberando o contexto gráfico
         g.dispose();
     }
+
+
+    private void desenharRecursos(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 14));
+
+        int y = 20;
+        g.drawString("RECURSOS COLETADOS", 10, y);
+        y += 20;
+        g.drawString(" Comida: " + comida, 20, y);
+        y += 20;
+        g.drawString("Madeira: " + madeira, 20, y);
+        y += 20;
+        g.drawString("Ouro: " + ouro, 20, y);
+    }
+
+
+
+    private boolean podeColetar(Personagem personagem, Recursos tipo) {
+        if (personagem instanceof Aldeao) {
+            // Aldeão coleta COMIDA e OURO
+            return tipo == Recursos.COMIDA || tipo == Recursos.OURO;
+        }
+        if (personagem instanceof Arqueiro) {
+            // Arqueiro coleta MADEIRA e COMIDA
+            return tipo == Recursos.MADEIRA || tipo == Recursos.COMIDA;
+        }
+        // Cavaleiros não coletam
+        return false;
+    }
+
+    private void coletarRecurso(Coletavel coletavel) {
+        coletavel.coletar(); // Marca como coletado
+
+
+        switch (coletavel.getTipo()) {
+
+            case COMIDA:
+                comida += coletavel.getQuantidade();
+                System.out.println(coletavel.getQuantidade() + " comida (Total: " + comida + ")");
+                break;
+
+            case MADEIRA:
+                madeira += coletavel.getQuantidade();
+                System.out.println(coletavel.getQuantidade() + " madeira (Total: " + madeira + ")");
+                break;
+
+            case OURO:
+                ouro += coletavel.getQuantidade();
+                System.out.println(coletavel.getQuantidade() + " ouro (Total: " + ouro + ")");
+                break;
+        }
+    }
+    public void verificarColetaveis() {
+        List<Coletavel> paraRemover = new ArrayList<>();
+
+        for (Personagem p : personagem) {
+             if (p.estaVivo()) {
+                    for (Coletavel c : coletaveis) {
+                     if (!c.isColetado()) {
+
+                            int dx = Math.abs(p.getPosX() - c.getPosX());
+                         int dy = Math.abs(p.getPosY() - c.getPosY());
+
+                         if (dx < 25 && dy < 25 && podeColetar(p, c.getTipo())) {
+                            coletarRecurso(c);
+                            c.coletar();
+                            paraRemover.add(c);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (!paraRemover.isEmpty()) {
+            coletaveis.removeAll(paraRemover);
+            repaint();
+            System.out.println("Coletados " + paraRemover.size() + " recursos");
+        }
+    }
+
+
+
+
+    public int getComida() { return comida; }
+    public int getMadeira() { return madeira; }
+    public int getOuro() { return ouro; }
+
 
     public void setFiltro(String filtro) {
         this.filtroAtual = filtro.toUpperCase();
