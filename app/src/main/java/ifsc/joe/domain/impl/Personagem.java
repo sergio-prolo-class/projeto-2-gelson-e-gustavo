@@ -19,6 +19,10 @@ public abstract class Personagem {
     protected String nomeImagem;
     protected int alcance;
     protected boolean vivo;
+    private  Image iconeMorto = null;
+    private boolean acabouDeMorrer = false;
+
+
 
 
     protected Personagem(int x, int y, int vida, int ataque, double velocidade, int alcance) {
@@ -33,16 +37,23 @@ public abstract class Personagem {
         this.atacando = false;
         this.nomeImagem = this.getClass().getSimpleName().toLowerCase();
         this.icone = carregarImagem(nomeImagem);
+        this.iconeMorto = carregarImagem("morto");
     }
 
 
     public void desenhar(Graphics g, JPanel painel) {
-        if (!vivo) {
-            // Se morto, desenha sprite de morto
-            Image iconeMorto = carregarImagem(nomeImagem + "_morto");
+        //  Mostra caveira se acabou de morrer
+        if (!vivo && acabouDeMorrer) {
             if (iconeMorto != null) {
                 g.drawImage(iconeMorto, this.posX, this.posY, painel);
             }
+
+            acabouDeMorrer = false;
+            return;
+        }
+
+        // já mostrou caveira, não desenha nada
+        if (!vivo) {
             return;
         }
 
@@ -54,7 +65,7 @@ public abstract class Personagem {
             g.drawImage(this.icone, this.posX, this.posY, painel);
         }
 
-        // Desenha barra de vida (se não estiver com vida cheia)
+        // Desenha barra de vida
         if (vida < vidaMaxima) {
             desenharBarraVida(g);
         }
@@ -114,8 +125,18 @@ public abstract class Personagem {
             this.vida = 0;
             this.vivo = false;
             this.atacando = false;
+
+            this.acabouDeMorrer = true;
         }
     }
+    public boolean mostrouCaveira() {
+        return !acabouDeMorrer;
+    }
+
+    public boolean isAcabouDeMorrer() {
+        return acabouDeMorrer;
+    }
+
     public double calcularDistancia(Personagem outro) {
         if (outro == null || this.icone == null || outro.icone == null) {
             return Double.MAX_VALUE;

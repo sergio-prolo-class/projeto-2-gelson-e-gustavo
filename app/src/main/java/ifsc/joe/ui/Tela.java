@@ -7,8 +7,14 @@ import ifsc.joe.enums.Recursos;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.*;
 import java.util.List;
+import java.util.Set;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
 
 public class Tela extends JPanel {
 
@@ -79,10 +85,11 @@ public class Tela extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
-        //TODO preciso ser melhorado
-
-        // percorrendo a lista de aldeões e pedindo para cada um se desenhar na tela
-        this.personagem.forEach(personagem -> personagem.desenhar(g, this));
+       for (Personagem p : personagem) {
+           if (p.estaVivo() || p.isAcabouDeMorrer()){
+               p.desenhar(g,this);
+           }
+       }
 
         // liberando o contexto gráfico
         g.dispose();
@@ -107,6 +114,48 @@ public class Tela extends JPanel {
                 return true;
         }
     }
+
+//    private void configurarTeclado(){
+//        addKeyListener(new java.awt.event.KeyAdapter(){
+//
+//            public void keyPressed(java.awt.event.KeyEvent e){
+//                processarTecla(e.getKeyCode());
+//            }
+//
+//        });
+//
+//    }
+
+//    private void processarTecla(int keyCode ){
+//
+//        switch (keyCode){
+//
+//            case KeyEvent.VK_W:
+//                movimentarPersonagens(Direcao.CIMA);
+//                break;
+//            case KeyEvent.VK_S:
+//                movimentarPersonagens(Direcao.BAIXO);
+//                break;
+//            case KeyEvent.VK_A:
+//                movimentarPersonagens(Direcao.ESQUERDA);
+//                break;
+//            case KeyEvent.VK_D:
+//                movimentarPersonagens(Direcao.DIREITA);
+//                break;
+//            case KeyEvent.VK_SPACE:
+//                atacarPersonagens();
+//                break;
+//
+//
+//
+//
+//
+//
+//        }
+//    repaintForce();
+//
+//
+//    }
 
 
 
@@ -135,7 +184,7 @@ public class Tela extends JPanel {
                 }
             }
         }
-
+            repaint();
         // Limpa mortos apos  ataque
         limparMortos();
         repaintForce();
@@ -176,7 +225,7 @@ public class Tela extends JPanel {
     }
 
     public void limparMortos() {
-        personagem.removeIf(p -> !p.estaVivo());
+        personagem.removeIf(p -> !p.estaVivo() && p.mostrouCaveira());
         repaint();
     }
 
