@@ -28,6 +28,9 @@ public class Aldeao extends Personagem implements Coletador, ComMontaria {
                 Constantes.ALDEAO_VIDA_INICIAL,Constantes.ALDEAO_ATAQUE,
                 Constantes.ALDEAO_VELOCIDADE,Constantes.ALDEAO_ALCANCE);
 
+        this.ouroColetado = 0;
+        this.comidaColetada = 0;
+
 
         this.isMontado = false;
     }
@@ -48,10 +51,12 @@ public class Aldeao extends Personagem implements Coletador, ComMontaria {
             isMontado = true;
             this.velocidade = this.velocidade * 2;
             this.nomeImagem = "aldeao_montado";
+            this.alcance = this.alcance/2;
         }else  {
             isMontado = false;
             this.velocidade = Constantes.ALDEAO_VELOCIDADE;
             this.nomeImagem = "aldeao";
+            this.alcance = Constantes.ALDEAO_ALCANCE;
         }
 
     }
