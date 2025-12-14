@@ -80,3 +80,15 @@ Pela classe App,
 Pelo terminal, utilizando o comando:
 
 ./gradlew run
+
+### Decisoões de desing importante
+```
+### Decisões de design importantes
+
+### 1. Implementação de Ataques dos Personagens
+
+A implementação do sistema de ataques foi um dos principais desafios do desenvolvimento do jogo, especialmente pela necessidade de manter comportamentos consistentes entre diferentes tipos de personagens.
+
+- **Problema:** Cada personagem possui atributos distintos (como alcance, dano e tempo de ataque), o que dificultava a padronização da lógica de ataque 
+
+- **Solução:** Foi criada uma estrutura comum para o sistema de ataque, centralizando a lógica principal e permitindo que cada personagem apenas especialize seus atributos e comportamentos específicos.
