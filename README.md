@@ -36,6 +36,17 @@ Implementar radio buttons para filtrar quais personagens serão afetados pelos c
 
 Adicionar botão para alternar estado montado/desmontado dos personagens com montaria.
 
+**Atalhos de Teclado (6 pontos)**
+
+Implementar controles por teclado para facilitar comandos rápidos. 
+
+## Arquitetura de Software
+
+**Arquivo de Configurações (3 pontos)**
+
+Centralizar valores constantes em arquivo ou classe de configuração. 
+
+
 ## Interface do Usuário
 
 **Barra de Vida (4 pontos)**
