@@ -81,7 +81,6 @@ Pelo terminal, utilizando o comando:
 
 ./gradlew run
 
-### Decisoões de desing importante
 ```
 ### Decisões de design importantes
 
