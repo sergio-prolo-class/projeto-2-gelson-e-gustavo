@@ -1,5 +1,6 @@
 package ifsc.joe.ui;
 
+import ifsc.joe.api.Coletador;
 import ifsc.joe.consts.Constantes;
 import ifsc.joe.domain.impl.*;
 import ifsc.joe.enums.Direcao;
@@ -195,35 +196,56 @@ public class Tela extends JPanel {
 
         for (Personagem p : personagem) {
             if (!p.estaVivo()) continue;
+            if (!(p instanceof Coletador)) continue; // Só quem implementa Coletador pode coletar
+
+            Coletador coletador = (Coletador) p;
 
             for (Coletavel c : coletaveis) {
                 if (c.isColetado()) continue;
-                if (!podeColetar(p, c.getTipo())) continue;
+
+                Recursos tipo = c.getTipo();
+
+
+                if (!podeColetar(p, tipo)) continue;
 
 
                 double distancia = p.calcularDistancia(c);
 
+                //arqueiro tem alcance reduzido
+                double alcanceColeta = (p instanceof Arqueiro)
+                        ? ((Arqueiro) p).getAlcanceColeta()
+                        : p.getAlcance();
 
+                // Verifica colisão simples (encostando nas bordas)
                 boolean colidiu =
-                        p.getPosX() < c.getX() + c.getLargura() &&
-                                p.getPosX() + p.getLargura() > c.getX() &&
-                                p.getPosY() < c.getY() + c.getAltura() &&
-                                p.getPosY() + p.getAltura() > c.getY();
+                        p.getPosX() < c.getPosX() + 20 &&
+                                p.getPosX() + 20 > c.getPosX() &&
+                                p.getPosY() < c.getPosY() + 20 &&
+                                p.getPosY() + 20 > c.getPosY();
 
 
-                if (colidiu || distancia <= p.getAlcance()) {
-                    coletarRecurso(c);
-                    coletados.add(c);
-                    break;
+
+                if (colidiu || distancia <= alcanceColeta) {
+
+                    boolean sucesso = coletador.coletar(tipo);
+
+
+                    if (sucesso) {
+                        coletarRecurso(c); // Atualiza o total global
+                        coletados.add(c);
+                    }
+                    break; // Um personagem coleta um item por vez
                 }
             }
         }
 
+        // Remove coletáveis coletados da lista
         if (!coletados.isEmpty()) {
             coletaveis.removeAll(coletados);
             repaint();
         }
     }
+
 
 
 
@@ -370,7 +392,6 @@ public class Tela extends JPanel {
 
 
     public void movimentarPersonagens(Direcao direcao) {
-        modoRaio = false;
         int movidos = 0;
         for (Personagem p : personagem) {
             if (p.estaVivo() && selecionarFiltro(p)) {
@@ -383,9 +404,8 @@ public class Tela extends JPanel {
         }
         if (movidos > 0) {
 
-            verificarColetaveis();
-            repaint();
 
+            repaint();
 
             System.out.println("Movidos: " + movidos + " personagens");
         }

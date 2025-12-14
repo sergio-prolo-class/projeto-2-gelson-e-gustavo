@@ -20,6 +20,7 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
 
     private int flechas;
     private int madeiraColetada;
+    private int comidaColetada;
 
     public Arqueiro(int x, int y) {
         super(x, y,Constantes.ARQUEIRO_VIDA_INICIAL,
@@ -27,21 +28,39 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
                 Constantes.ARQUEIRO_VELOCIDADE,Constantes.ARQUEIRO_ALCANCE);
         this.flechas = Constantes.ARQUEIRO_FLECHAS_INICIAL;
         this.madeiraColetada = 0;
+        this.comidaColetada = 0;
 
     }
 
 
+    public double getAlcanceColeta() {
+        return this.getAlcance() / 3.0;
+    }
+    //alcance menor pra coletar
+
     @Override
     public boolean coletar(Recursos recurso) {
-        if (recurso == Recursos.MADEIRA) {
-            this.madeiraColetada++;
-            System.out.println("[ARQUEIRO] Madeira coletada! Total: " + this.madeiraColetada);
-            return true;
+        if (!COLETAVEIS.contains(recurso)) {
+            System.out.println("[ARQUEIRO] Não pode coletar " + recurso + "!");
+            return false;
         }
 
+        switch (recurso) {
+            case MADEIRA:
+                this.madeiraColetada++;
+                System.out.println("[ARQUEIRO] Coletou madeira! Total: " + this.madeiraColetada);
+                break;
 
-        System.out.println("[ARQUEIRO] Não coleta " + recurso + "! (Só coleta MADEIRA)");
-        return false;
+            case COMIDA:
+                this.comidaColetada++;
+                System.out.println("[ARQUEIRO] Coletou um pouco de comida" + this.comidaColetada);
+                break;
+
+            case OURO:
+                System.out.println("[ARQUEIRO] Encontrou um pequeno tesouro de ouro!");
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -91,6 +110,8 @@ public class Arqueiro extends Personagem implements Coletador, Guerreiro {
         System.out.println("Vida do alvo " + alvo.getVida());
         System.out.println("atacando" + atacando);
     }
+
+
 
     private int getDano() {
         return this.ataque;
