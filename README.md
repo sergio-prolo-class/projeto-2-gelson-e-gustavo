@@ -59,16 +59,22 @@ Indicador visual da vida atual de cada personagem acima do sprite.
 
 Implementar mecânica de coleta de recursos adicionados ao jogador. 
 
-## Como executar o Jogo
+## 🎮 Como Executar o Jogo
 
-### Clone o Repositorio
+### 1️⃣ Clone o repositório
+No terminal, execute:
+```bash
+git clone https://github.com/sergio-prolo-class/projeto-2-gelson-e-gustavo.git
 
-'''bash
-https://github.com/sergio-prolo-class/projeto-2-gelson-e-gustavo.git
+2️Acesse o diretório do projeto
+cd projeto-2-gelson-e-gustavo
 
-## Navegue até o diretorio
+3️Execute o projeto
 
-Cd projeto-2-gelson-e-gustavo
+Você pode executar o jogo de duas formas:
 
-## Execute o projeto
-Pode ser pela classe app ou utilizando ./gradlew run
+Pela classe App,
+
+Pelo terminal, utilizando o comando:
+
+./gradlew run
