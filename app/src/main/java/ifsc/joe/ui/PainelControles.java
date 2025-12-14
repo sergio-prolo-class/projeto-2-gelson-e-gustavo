@@ -174,9 +174,13 @@ public class PainelControles {
                 getTela().alternarMontaria();
                 break;
 
-            // Filtros - Tab para alternar
+            // Filtros - SHIFT para alternar
             case KeyEvent.VK_SHIFT:
                 alternarFiltroTab();
+                break;
+
+            case KeyEvent.VK_C:
+                getTela().coletarComBotao();
                 break;
         }
     }
@@ -329,5 +333,10 @@ public class PainelControles {
      */
     private void createUIComponents() {
         this.painelTela = new Tela();
+
+        // Define o tamanho fixo da área de jogo
+        this.painelTela.setPreferredSize(
+                new Dimension(ifsc.joe.consts.Constantes.LARGURA_TELA, ifsc.joe.consts.Constantes.ALTURA_TELA)
+        );
     }
 }

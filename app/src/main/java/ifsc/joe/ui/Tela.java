@@ -1,5 +1,6 @@
 package ifsc.joe.ui;
 
+import ifsc.joe.consts.Constantes;
 import ifsc.joe.domain.impl.*;
 import ifsc.joe.enums.Direcao;
 import ifsc.joe.enums.Recursos;
@@ -24,15 +25,25 @@ public class Tela extends JPanel {
     private int ouro = 0;
     private boolean coletaveisInicializados = false;
     private boolean modoRaio = false;
+    private Image background;
 
     private final Set<Personagem> personagem;
     private String filtroAtual = "TODOS";
 
     public Tela() {
 
-        //TODO preciso ser melhorado
+        this.setPreferredSize(new Dimension(Constantes.LARGURA_TELA, Constantes.ALTURA_TELA));
 
         this.setBackground(Color.white);
+            try {
+                background = new ImageIcon(
+                        getClass().getClassLoader().getResource("./background.png")
+                ).getImage();
+            } catch (Exception e) {
+                System.err.println("Erro ao carregar imagem de fundo: " + e.getMessage());
+                background = null;
+            }
+
         this.personagem = new HashSet<>();
         this.coletaveis = new ArrayList<>();
 
@@ -53,10 +64,10 @@ public class Tela extends JPanel {
         System.out.println("Inicializando coletáveis em tela " +
                 largura + "x" + altura);
 
-        // Limpa qualquer coletável antigo (por segurança)
+        // Limpa qualquer coletável
         coletaveis.clear();
 
-        // Distribui coletáveis aleatórios
+
         for (int i = 0; i < 15; i++) {
             Recursos tipo = Recursos.values()[rand.nextInt(Recursos.values().length)];
 
@@ -75,12 +86,6 @@ public class Tela extends JPanel {
     }
 
 
-//    public void redistribuirColetaveis() {
-//        coletaveisInicializados = false;
-//        coletaveis.clear();
-//        repaint(); // Vai chamar paint() que vai redistribuir
-//    }
-
     /**
      * Method que invocado sempre que o JPanel precisa ser resenhado.
      * @param g Graphics componente de java.awt
@@ -88,6 +93,14 @@ public class Tela extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+
+
+        if (background != null) {
+            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+        } else {
+            g.setColor(new Color(180, 220, 180)); // fallback verde-claro
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
 
 
         if (!coletaveisInicializados && getWidth() > 0 && getHeight() > 0) {
@@ -172,7 +185,7 @@ public class Tela extends JPanel {
     public void coletarComBotao() {
         verificarColetaveis();
         modoRaio = true;
-        new javax.swing.Timer(500, e -> {
+        new javax.swing.Timer(Constantes.DELAY, e -> {
             modoRaio = false;
             repaint();
         }).start();
@@ -276,7 +289,7 @@ public class Tela extends JPanel {
             repaint();
         // Limpa mortos apos  ataque
         limparMortos();
-        new javax.swing.Timer(500, e -> {
+        new javax.swing.Timer(Constantes.DELAY, e -> {
             modoRaio = false;
             repaint();
         }).start();
