@@ -16,15 +16,37 @@
 
 **Ataque Básico (3 pontos)**
 
-Implementar sistema de ataque onde personagens podem atacar outros personagens no jogo.
+Implementa sistema de ataque onde personagens podem atacar outros personagens no jogo.
 
 **Sistema de Morte (3 pontos)**
 
 Personagens com vida zero são removidos do jogo com efeitos visuais.
 
-## Alcance Variável
-4 pontos
+**Alcance Variável (4 pontos)**
+
 Ataques têm limite de distância para acertar, variando conforme tipo de personagem.
+
+## Controles Avançados
+
+**Filtro por Tipo (4 pontos)**
+
+Implementar radio buttons para filtrar quais personagens serão afetados pelos comandos.
+
+**Controle de Montaria (5 pontos)**
+
+Adicionar botão para alternar estado montado/desmontado dos personagens com montaria.
+
+## Interface do Usuário
+
+**Barra de Vida (4 pontos)**
+
+Indicador visual da vida atual de cada personagem acima do sprite.
+
+## Funcionalidades de Jogo
+
+**Sistema de Coleta (4 pontos)**
+
+Implementar mecânica de coleta de recursos adicionados ao jogador. 
 
 
 
