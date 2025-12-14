@@ -12,14 +12,14 @@
 
 ## Funcionalidades Implementadas
 
-Sistema de Combate
+**Sistemas de combate**
 
-Ataque Básico (3 pontos)
+**Ataque Básico (3 pontos)**
 
 Implementar sistema de ataque onde personagens podem atacar outros personagens no jogo.
 
-## Sistema de Morte
-3 pontos
+**Sistema de Morte (3 pontos)**
+
 Personagens com vida zero são removidos do jogo com efeitos visuais.
 
 ## Alcance Variável
