@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
-
 /**
  * Classe responsável por gerenciar os controles e interações da interface.
  * Conecta os componentes visuais com a lógica do jogo (Tela).
@@ -38,6 +36,7 @@ public class PainelControles {
     private JButton buttonDireita;
     private JLabel logo;
     private JButton montarButton;
+    private JButton coletarButton;
     private JLabel labelRecursos;
 
     public PainelControles() {
@@ -45,24 +44,27 @@ public class PainelControles {
         configurarListeners();
         configurarTeclado();
 //        criarLabelRecursos();
-//        configurarBotaoColetar();
+        configurarBotaoColetar();
     }
 
-//    private void criarLabelRecursos() {
-//        labelRecursos = new JLabel("Recursos: ");
-//        labelRecursos.setFont(new Font("Arial", Font.BOLD, 12));
-//        labelRecursos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-//        painelLateral.add(labelRecursos, BorderLayout.SOUTH);
-//    }
-//
-//    private void configurarBotaoColetar() {
-//        JButton coletarButton = new JButton("Verificar Coleta");
-//        coletarButton.addActionListener(e -> {
-//            getTela().verificarColetaveis();
-//            //atualizarDisplayRecursos();
-//        });
-//        painelLateral.add(coletarButton);
-//    }
+
+    public void configurarBotaoColetar() {
+        coletarButton.addActionListener(e -> {
+            getTela().coletarComBotao();
+
+        });
+    }
+    private void atualizarDisplayRecursos() {
+        int comida = getTela().getComida();
+        int madeira = getTela().getMadeira();
+        int ouro = getTela().getOuro();
+
+        labelRecursos.setText(
+                "Comida: " + comida +
+                        " | Madeira: " + madeira +
+                        " | Ouro: " + ouro
+        );
+    }
 
     /**
      * Configura todos os listeners dos botões.

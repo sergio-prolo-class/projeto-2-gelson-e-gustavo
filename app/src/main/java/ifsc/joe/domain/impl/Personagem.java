@@ -1,5 +1,6 @@
 package ifsc.joe.domain.impl;
 
+import ifsc.joe.api.Posicionavel;
 import ifsc.joe.enums.Direcao;
 
 import javax.swing.*;
@@ -7,7 +8,7 @@ import java.awt.*;
 import java.util.Objects;
 
 
-public abstract class Personagem {
+public abstract class Personagem implements Posicionavel {
 
     protected int vida;
     protected int vidaMaxima;
@@ -137,23 +138,51 @@ public abstract class Personagem {
         return acabouDeMorrer;
     }
 
-    public double calcularDistancia(Personagem outro) {
-        if (outro == null || this.icone == null || outro.icone == null) {
-            return Double.MAX_VALUE;
-        }
+    @Override
+    public int getX() { return posX; }
 
-        int centroX1 = this.posX + this.icone.getWidth(null) / 2;
-        int centroY1 = this.posY + this.icone.getHeight(null) / 2;
+    @Override
+    public int getY() { return posY; }
 
-        int centroX2 = outro.posX + outro.icone.getWidth(null) / 2;
-        int centroY2 = outro.posY + outro.icone.getHeight(null) / 2;
+    @Override
+    public int getLargura() {
+        return icone != null ? icone.getWidth(null) : 0;
+    }
+
+    @Override
+    public int getAltura() {
+        return icone != null ? icone.getHeight(null) : 0;
+    }
+
+    public double calcularDistancia(Posicionavel outro) {
+        if (outro == null) return Double.MAX_VALUE;
+
+        int centroX1 = this.getX() + this.getLargura() / 2;
+        int centroY1 = this.getY() + this.getAltura() / 2;
+
+        int centroX2 = outro.getX() + outro.getLargura() / 2;
+        int centroY2 = outro.getY() + outro.getAltura() / 2;
 
         int dx = centroX1 - centroX2;
         int dy = centroY1 - centroY2;
 
         return Math.sqrt(dx * dx + dy * dy);
     }
-    public boolean estaNoAlcance(Personagem outro) {
+
+    public void desenharAlcance(Graphics g) {
+        if (icone == null) return;
+
+        int centroX = posX + icone.getWidth(null) / 2;
+        int centroY = posY + icone.getHeight(null) / 2;
+
+        g.setColor(new Color(0, 0, 255, 60));
+        g.fillOval(centroX - alcance, centroY - alcance, alcance * 2, alcance * 2);
+
+        g.setColor(Color.BLUE);
+        g.drawOval(centroX - alcance, centroY - alcance, alcance * 2, alcance * 2);
+    }
+
+    public boolean estaNoAlcance(Posicionavel outro) {
         return calcularDistancia(outro) <= this.alcance;
     }
 

@@ -1,5 +1,6 @@
 package ifsc.joe.domain.impl;
 
+import ifsc.joe.api.Posicionavel;
 import ifsc.joe.enums.Recursos;
 
 import javax.swing.*;
@@ -7,7 +8,7 @@ import java.awt.*;
 import java.util.Objects;
 import java.util.Random;
 
-public class Coletavel {
+public class Coletavel implements Posicionavel {
 
         private final Recursos tipo;
         private final int quantidade;
@@ -39,6 +40,8 @@ public class Coletavel {
             this.icone = carregarImagem(nomeImagem);
 
         }
+
+
 
         private String gerarNomeImagemAleatoria(Recursos tipo) {
 
@@ -126,8 +129,8 @@ public class Coletavel {
         int diferencaX = Math.abs(posX - personagem.getPosX());
         int diferencaY = Math.abs(posY - personagem.getPosY());
 
-        // Colide se estiver dentro de 20 pixels
-        return diferencaX < 20 && diferencaY < 20;
+        // Colide se estiver dentro de 10 pixels
+        return diferencaX < 10 && diferencaY < 10;
     }
 
 
@@ -139,6 +142,22 @@ public class Coletavel {
 
         public void coletar() {
             this.coletado = true;
+        }
+
+        @Override
+        public int getX() { return posX; }
+
+        @Override
+        public int getY() { return posY; }
+
+        @Override
+        public int getLargura() {
+            return icone != null ? icone.getWidth(null) : 20;
+        }
+
+        @Override
+        public int getAltura() {
+            return icone != null ? icone.getHeight(null) : 20;
         }
 
         @Override

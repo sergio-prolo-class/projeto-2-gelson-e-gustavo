@@ -23,6 +23,7 @@ public class Tela extends JPanel {
     private int madeira = 0;
     private int ouro = 0;
     private boolean coletaveisInicializados = false;
+    private boolean modoRaio = false;
 
     private final Set<Personagem> personagem;
     private String filtroAtual = "TODOS";
@@ -49,7 +50,7 @@ public class Tela extends JPanel {
         int largura = getWidth();
         int altura = getHeight();
 
-        System.out.println("📐 Inicializando coletáveis em tela " +
+        System.out.println("Inicializando coletáveis em tela " +
                 largura + "x" + altura);
 
         // Limpa qualquer coletável antigo (por segurança)
@@ -104,6 +105,11 @@ public class Tela extends JPanel {
                p.desenhar(g,this);
            }
        }
+        for (Personagem p : personagem) {
+            if ((modoRaio) && p.estaVivo() && selecionarFiltro(p)) {
+                p.desenharAlcance(g);
+            }
+        }
 
         desenharRecursos(g);
         // liberando o contexto gráfico
@@ -162,35 +168,51 @@ public class Tela extends JPanel {
                 break;
         }
     }
+
+    public void coletarComBotao() {
+        verificarColetaveis();
+        modoRaio = true;
+        new javax.swing.Timer(500, e -> {
+            modoRaio = false;
+            repaint();
+        }).start();
+    }
     public void verificarColetaveis() {
-        List<Coletavel> paraRemover = new ArrayList<>();
+        List<Coletavel> coletados = new ArrayList<>();
 
         for (Personagem p : personagem) {
-             if (p.estaVivo()) {
-                    for (Coletavel c : coletaveis) {
-                     if (!c.isColetado()) {
+            if (!p.estaVivo()) continue;
 
-                            int dx = Math.abs(p.getPosX() - c.getPosX());
-                         int dy = Math.abs(p.getPosY() - c.getPosY());
+            for (Coletavel c : coletaveis) {
+                if (c.isColetado()) continue;
+                if (!podeColetar(p, c.getTipo())) continue;
 
-                         if (dx < 25 && dy < 25 && podeColetar(p, c.getTipo())) {
-                            coletarRecurso(c);
-                            c.coletar();
-                            paraRemover.add(c);
-                            break;
-                        }
-                    }
+
+                double distancia = p.calcularDistancia(c);
+
+
+                boolean colidiu =
+                        p.getPosX() < c.getX() + c.getLargura() &&
+                                p.getPosX() + p.getLargura() > c.getX() &&
+                                p.getPosY() < c.getY() + c.getAltura() &&
+                                p.getPosY() + p.getAltura() > c.getY();
+
+
+                if (colidiu || distancia <= p.getAlcance()) {
+                    coletarRecurso(c);
+                    coletados.add(c);
+                    break;
                 }
             }
         }
 
-
-        if (!paraRemover.isEmpty()) {
-            coletaveis.removeAll(paraRemover);
+        if (!coletados.isEmpty()) {
+            coletaveis.removeAll(coletados);
             repaint();
-            System.out.println("Coletados " + paraRemover.size() + " recursos");
         }
     }
+
+
 
 
 
@@ -220,51 +242,13 @@ public class Tela extends JPanel {
         }
     }
 
-//    private void configurarTeclado(){
-//        addKeyListener(new java.awt.event.KeyAdapter(){
-//
-//            public void keyPressed(java.awt.event.KeyEvent e){
-//                processarTecla(e.getKeyCode());
-//            }
-//
-//        });
-//
-//    }
-
-//    private void processarTecla(int keyCode ){
-//
-//        switch (keyCode){
-//
-//            case KeyEvent.VK_W:
-//                movimentarPersonagens(Direcao.CIMA);
-//                break;
-//            case KeyEvent.VK_S:
-//                movimentarPersonagens(Direcao.BAIXO);
-//                break;
-//            case KeyEvent.VK_A:
-//                movimentarPersonagens(Direcao.ESQUERDA);
-//                break;
-//            case KeyEvent.VK_D:
-//                movimentarPersonagens(Direcao.DIREITA);
-//                break;
-//            case KeyEvent.VK_SPACE:
-//                atacarPersonagens();
-//                break;
-//
-//
-//
-//
-//
-//
-//        }
-//    repaintForce();
-//
-//
-//    }
-
 
 
     public void atacarPersonagens() {
+
+        modoRaio = true;
+
+        repaint();
 
         int ataquesRealizados = 0;
 
@@ -292,7 +276,10 @@ public class Tela extends JPanel {
             repaint();
         // Limpa mortos apos  ataque
         limparMortos();
-        repaintForce();
+        new javax.swing.Timer(500, e -> {
+            modoRaio = false;
+            repaint();
+        }).start();
     }
 
 
@@ -370,6 +357,7 @@ public class Tela extends JPanel {
 
 
     public void movimentarPersonagens(Direcao direcao) {
+        modoRaio = false;
         int movidos = 0;
         for (Personagem p : personagem) {
             if (p.estaVivo() && selecionarFiltro(p)) {
@@ -380,34 +368,15 @@ public class Tela extends JPanel {
         if (movidos > 0) {
             repaint();
         }
+        if (movidos > 0) {
+
+            verificarColetaveis();
+            repaint();
+
+
+            System.out.println("Movidos: " + movidos + " personagens");
+        }
     }
 
 
-    /**
-     * Atualiza as coordenadas X ou Y de todos os aldeoes
-     *
-     * @param direcao direcao para movimentar
-     */
-//    public void movimentarAldeoes(Direcao direcao) {
-//        //TODO preciso ser melhorado
-//
-//        this.personagem.forEach(aldeao -> aldeao.mover(direcao, this.getWidth(), this.getHeight()));
-//
-//        // Depois que as coordenadas foram atualizadas é necessário repintar o JPanel
-//        this.repaint();
-//    }
-
-    /**
-     * Altera o estado do aldeão de atacando para não atacando e vice-versa
-     */
-//    public void atacarAldeoes() {
-//
-//        //TODO preciso ser melhorado
-//
-//
-//        this.personagem.forEach(Personagem :: atacar);
-//
-//        // Fazendo o JPanel ser redesenhado
-//        this.repaint();
-//    }
 }
