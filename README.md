@@ -10,6 +10,8 @@
 - Paradigma Programação Orientada a Objeto
 - Projeto gradle
 
+## Funcionalidades Implementadas
+
 
 ## Licença
 
