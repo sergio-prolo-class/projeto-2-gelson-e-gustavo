@@ -61,15 +61,17 @@ Implementar mecânica de coleta de recursos adicionados ao jogador.
 
 ## 🎮 Como Executar o Jogo
 
-### 1️⃣ Clone o repositório
-No terminal, execute:
+### No terminal, execute:
 ```bash
+Clone o repositório
+
 git clone https://github.com/sergio-prolo-class/projeto-2-gelson-e-gustavo.git
 
-2️Acesse o diretório do projeto
+Acesse o diretório do projeto
+
 cd projeto-2-gelson-e-gustavo
 
-3️Execute o projeto
+Execute o projeto
 
 Você pode executar o jogo de duas formas:
 
