@@ -91,3 +91,9 @@ A implementação do sistema de ataques foi um dos principais desafios do desenv
 - **Problema:** Cada personagem possui atributos distintos (como alcance, dano e tempo de ataque), o que dificultava a padronização da lógica de ataque 
 
 - **Solução:** Foi criada uma estrutura comum para o sistema de ataque, centralizando a lógica principal e permitindo que cada personagem apenas especialize seus atributos e comportamentos específicos.
+
+  ## Licença
+
+Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
