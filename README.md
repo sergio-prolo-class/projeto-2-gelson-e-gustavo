@@ -63,15 +63,15 @@ Implementar mecânica de coleta de recursos adicionados ao jogador.
 
 ### No terminal, execute:
 ```bash
-Clone o repositório
+1 Clone o repositório
 
 git clone https://github.com/sergio-prolo-class/projeto-2-gelson-e-gustavo.git
 
-Acesse o diretório do projeto
+2 Acesse o diretório do projeto
 
 cd projeto-2-gelson-e-gustavo
 
-Execute o projeto
+3 Execute o projeto
 
 Você pode executar o jogo de duas formas:
 
