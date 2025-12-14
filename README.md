@@ -12,10 +12,9 @@
 
 ## Funcionalidades Implementadas
 
-## Sistema de Combate
+Sistema de Combate
 
-## Ataque Básico
-3 pontos
+Ataque Básico (3 pontos)
 Implementar sistema de ataque onde personagens podem atacar outros personagens no jogo.
 
 ## Sistema de Morte
