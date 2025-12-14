@@ -59,10 +59,16 @@ Indicador visual da vida atual de cada personagem acima do sprite.
 
 Implementar mecânica de coleta de recursos adicionados ao jogador. 
 
+## Como executar o Jogo
 
+### Clone o Repositorio
 
-## Licença
+'''bash
+https://github.com/sergio-prolo-class/projeto-2-gelson-e-gustavo.git
 
-Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
+## Navegue até o diretorio
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Cd projeto-2-gelson-e-gustavo
+
+## Execute o projeto
+Pode ser pela classe app ou utilizando ./gradlew run
