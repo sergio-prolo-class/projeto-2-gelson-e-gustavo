@@ -35,7 +35,7 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
         } else {
             montado = false;
             this.velocidade = this.velocidade /2;
-            this.ataque = this.ataque -2;
+            this.ataque = this.ataque +3;
             this.nomeImagem = "cavaleiro_desmontado";
         }
     }
@@ -47,12 +47,7 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
         return this.ataque;
     }
 
-//        @Override
-//    public void atacar(Personagem alvo) {
-//        this.atacando = true;
-//        alvo.sofrerDano(this.ataque);
-//
-//        }
+
 
     @Override
     public void atacar(Personagem alvo) {
@@ -96,9 +91,12 @@ public class Cavaleiro extends Personagem implements ComMontaria, Guerreiro {
         System.out.println("atacando" + atacando);
     }
 
+
     @Override
     protected void receberDano(int dano) {
-
+        sofrerDano(dano);
     }
 }
+
+
 

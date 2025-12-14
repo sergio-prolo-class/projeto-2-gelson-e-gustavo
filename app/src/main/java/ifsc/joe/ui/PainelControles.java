@@ -4,6 +4,7 @@ import ifsc.joe.enums.Direcao;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Random;
 
 /**
@@ -35,10 +36,34 @@ public class PainelControles {
     private JButton buttonDireita;
     private JLabel logo;
     private JButton montarButton;
+    private JButton coletarButton;
+    private JLabel labelRecursos;
 
     public PainelControles() {
         this.sorteio = new Random();
         configurarListeners();
+        configurarTeclado();
+//        criarLabelRecursos();
+        configurarBotaoColetar();
+    }
+
+
+    public void configurarBotaoColetar() {
+        coletarButton.addActionListener(e -> {
+            getTela().coletarComBotao();
+
+        });
+    }
+    private void atualizarDisplayRecursos() {
+        int comida = getTela().getComida();
+        int madeira = getTela().getMadeira();
+        int ouro = getTela().getOuro();
+
+        labelRecursos.setText(
+                "Comida: " + comida +
+                        " | Madeira: " + madeira +
+                        " | Ouro: " + ouro
+        );
     }
 
     /**
@@ -50,6 +75,7 @@ public class PainelControles {
         configurarBotoesCriacao();
         configurarBotaoAtaque();
         configurarBotaoMontar();
+
     }
 
     private void configurarRadioButtons() {
@@ -85,6 +111,104 @@ public class PainelControles {
             }
         });
     }
+    private void configurarTeclado() {
+
+        painelPrincipal.setFocusable(true);
+        painelPrincipal.requestFocusInWindow();
+
+        painelPrincipal.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                processarTecla(e.getKeyCode());
+            }
+        });
+    }
+
+    private void processarTecla(int keyCode) {
+        switch (keyCode) {
+            // Movimentaçao
+            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
+                getTela().movimentarPersonagens(Direcao.CIMA);
+                break;
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
+                getTela().movimentarPersonagens(Direcao.BAIXO);
+                break;
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:
+                getTela().movimentarPersonagens(Direcao.ESQUERDA);
+                break;
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:
+                getTela().movimentarPersonagens(Direcao.DIREITA);
+                break;
+
+            // Criar personagens
+            case KeyEvent.VK_1:
+                criarAldeaoAleatorio();
+                break;
+            case KeyEvent.VK_2:
+                criarCavaleiroAleatorio();
+                break;
+            case KeyEvent.VK_3:
+                criarArqueiroAleatorio();
+                break;
+
+            // Açoes
+            case KeyEvent.VK_SPACE:
+                getTela().atacarPersonagens();
+
+                // Feedback visual no botão de ataque
+                atacarButton.setBackground(Color.RED);
+                atacarButton.setForeground(Color.WHITE);
+                Timer timer = new Timer(200, evt -> {
+                    atacarButton.setBackground(null);
+                    atacarButton.setForeground(null);
+                });
+                timer.setRepeats(false);
+                timer.start();
+                break;
+
+            case KeyEvent.VK_M:
+                getTela().alternarMontaria();
+                break;
+
+            // Filtros - SHIFT para alternar
+            case KeyEvent.VK_SHIFT:
+                alternarFiltroTab();
+                break;
+
+            case KeyEvent.VK_C:
+                getTela().coletarComBotao();
+                break;
+        }
+    }
+
+    private void alternarFiltroTab() {
+        if (todosRadioButton.isSelected()) {
+            aldeaoRadioButton.setSelected(true);
+            getTela().setFiltro("ALDEAO");
+        }
+        else if (aldeaoRadioButton.isSelected()) {
+            cavaleiroRadioButton.setSelected(true);
+            getTela().setFiltro("CAVALEIRO");
+        }
+        else if (cavaleiroRadioButton.isSelected()) {
+            arqueiroRadioButton.setSelected(true);
+            getTela().setFiltro("ARQUEIRO");
+        }
+        else if (arqueiroRadioButton.isSelected()) {
+            todosRadioButton.setSelected(true);
+            getTela().setFiltro("TODOS");
+        }
+        else {
+
+            todosRadioButton.setSelected(true);
+            getTela().setFiltro("TODOS");
+        }
+    }
+
 
 
 
@@ -209,5 +333,10 @@ public class PainelControles {
      */
     private void createUIComponents() {
         this.painelTela = new Tela();
+
+        // Define o tamanho fixo da área de jogo
+        this.painelTela.setPreferredSize(
+                new Dimension(ifsc.joe.consts.Constantes.LARGURA_TELA, ifsc.joe.consts.Constantes.ALTURA_TELA)
+        );
     }
 }

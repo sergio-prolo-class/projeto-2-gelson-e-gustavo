@@ -1,5 +1,6 @@
 package ifsc.joe.domain.impl;
 
+import ifsc.joe.api.Posicionavel;
 import ifsc.joe.enums.Direcao;
 
 import javax.swing.*;
@@ -7,7 +8,7 @@ import java.awt.*;
 import java.util.Objects;
 
 
-public abstract class Personagem {
+public abstract class Personagem implements Posicionavel {
 
     protected int vida;
     protected int vidaMaxima;
@@ -19,6 +20,10 @@ public abstract class Personagem {
     protected String nomeImagem;
     protected int alcance;
     protected boolean vivo;
+    private  Image iconeMorto = null;
+    private boolean acabouDeMorrer = false;
+
+
 
 
     protected Personagem(int x, int y, int vida, int ataque, double velocidade, int alcance) {
@@ -33,16 +38,23 @@ public abstract class Personagem {
         this.atacando = false;
         this.nomeImagem = this.getClass().getSimpleName().toLowerCase();
         this.icone = carregarImagem(nomeImagem);
+        this.iconeMorto = carregarImagem("morto");
     }
 
 
     public void desenhar(Graphics g, JPanel painel) {
-        if (!vivo) {
-            // Se morto, desenha sprite de morto
-            Image iconeMorto = carregarImagem(nomeImagem + "_morto");
+        //  Mostra caveira se acabou de morrer
+        if (!vivo && acabouDeMorrer) {
             if (iconeMorto != null) {
                 g.drawImage(iconeMorto, this.posX, this.posY, painel);
             }
+
+            acabouDeMorrer = false;
+            return;
+        }
+
+        // já mostrou caveira, não desenha nada
+        if (!vivo) {
             return;
         }
 
@@ -54,7 +66,7 @@ public abstract class Personagem {
             g.drawImage(this.icone, this.posX, this.posY, painel);
         }
 
-        // Desenha barra de vida (se não estiver com vida cheia)
+        // Desenha barra de vida
         if (vida < vidaMaxima) {
             desenharBarraVida(g);
         }
@@ -114,16 +126,63 @@ public abstract class Personagem {
             this.vida = 0;
             this.vivo = false;
             this.atacando = false;
+
+            this.acabouDeMorrer = true;
         }
     }
-    public double calcularDistancia(Personagem outro) {
+    public boolean mostrouCaveira() {
+        return !acabouDeMorrer;
+    }
+
+    public boolean isAcabouDeMorrer() {
+        return acabouDeMorrer;
+    }
+
+    @Override
+    public int getX() { return posX; }
+
+    @Override
+    public int getY() { return posY; }
+
+    @Override
+    public int getLargura() {
+        return icone != null ? icone.getWidth(null) : 0;
+    }
+
+    @Override
+    public int getAltura() {
+        return icone != null ? icone.getHeight(null) : 0;
+    }
+
+    public double calcularDistancia(Posicionavel outro) {
         if (outro == null) return Double.MAX_VALUE;
 
-        int dx = this.posX - outro.posX;
-        int dy = this.posY - outro.posY;
+        int centroX1 = this.getX() + this.getLargura() / 2;
+        int centroY1 = this.getY() + this.getAltura() / 2;
+
+        int centroX2 = outro.getX() + outro.getLargura() / 2;
+        int centroY2 = outro.getY() + outro.getAltura() / 2;
+
+        int dx = centroX1 - centroX2;
+        int dy = centroY1 - centroY2;
+
         return Math.sqrt(dx * dx + dy * dy);
     }
-    public boolean estaNoAlcance(Personagem outro) {
+
+    public void desenharAlcance(Graphics g) {
+        if (icone == null) return;
+
+        int centroX = posX + icone.getWidth(null) / 2;
+        int centroY = posY + icone.getHeight(null) / 2;
+
+        g.setColor(new Color(0, 0, 255, 60));
+        g.fillOval(centroX - alcance, centroY - alcance, alcance * 2, alcance * 2);
+
+        g.setColor(Color.BLUE);
+        g.drawOval(centroX - alcance, centroY - alcance, alcance * 2, alcance * 2);
+    }
+
+    public boolean estaNoAlcance(Posicionavel outro) {
         return calcularDistancia(outro) <= this.alcance;
     }
 

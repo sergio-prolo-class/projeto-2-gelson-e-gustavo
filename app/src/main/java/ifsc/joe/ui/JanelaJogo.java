@@ -1,5 +1,7 @@
 package ifsc.joe.ui;
 
+import ifsc.joe.consts.Constantes;
+
 import javax.swing.*;
 
 /**
@@ -7,12 +9,11 @@ import javax.swing.*;
  */
 public class JanelaJogo {
 
-    private static final String TITULO = "Java of Empires";
     private final JFrame frame;
     private final PainelControles painelControles;
 
     public JanelaJogo() {
-        this.frame = new JFrame(TITULO);
+        this.frame = new JFrame(Constantes.TITULO_JOGO);
         this.painelControles = new PainelControles();
 
         this.configurarJanela();
@@ -26,7 +27,7 @@ public class JanelaJogo {
         frame.setResizable(false);
         frame.setContentPane(painelControles.getPainelPrincipal());
         frame.pack();
-        frame.setLocationRelativeTo(null); // Centralizar na tela
+        frame.setLocationRelativeTo(null);
     }
 
     /**
