@@ -1,118 +1,82 @@
 package ifsc.joe.ui;
 
 import ifsc.joe.enums.Direcao;
+import ifsc.joe.enums.TipoPersonagem;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-/**
- * Classe responsável por gerenciar os controles e interações da interface.
- * Conecta os componentes visuais com a lógica do jogo (Tela).
- */
+import static ifsc.joe.enums.TipoPersonagem.*;
+
 public class PainelControles {
 
-    private final Random sorteio;
+    private final Random sorteio = new Random();
     private Tela tela;
 
-    private ButtonGroup grupoFiltro;
-
-    // Componentes da interface (gerados pelo Form Designer)
     private JPanel painelPrincipal;
     private JPanel painelTela;
     private JPanel painelLateral;
+
     private JButton bCriaAldeao;
     private JButton bCriaArqueiro;
     private JButton bCriaCavaleiro;
+
+    private JButton atacarButton;
+    private JButton montarButton;
+    private JButton coletarButton;
+
+    private JButton buttonCima;
+    private JButton buttonBaixo;
+    private JButton buttonEsquerda;
+    private JButton buttonDireita;
+
     private JRadioButton todosRadioButton;
     private JRadioButton aldeaoRadioButton;
     private JRadioButton arqueiroRadioButton;
     private JRadioButton cavaleiroRadioButton;
-    private JButton atacarButton;
-    private JButton buttonCima;
-    private JButton buttonEsquerda;
-    private JButton buttonBaixo;
-    private JButton buttonDireita;
+
     private JLabel logo;
-    private JButton montarButton;
-    private JButton coletarButton;
     private JLabel labelRecursos;
 
     public PainelControles() {
-        this.sorteio = new Random();
         configurarListeners();
         configurarTeclado();
-//        criarLabelRecursos();
         configurarBotaoColetar();
     }
 
-
-    public void configurarBotaoColetar() {
-        coletarButton.addActionListener(e -> {
-            getTela().coletarComBotao();
-
-        });
-    }
-    private void atualizarDisplayRecursos() {
-        int comida = getTela().getComida();
-        int madeira = getTela().getMadeira();
-        int ouro = getTela().getOuro();
-
-        labelRecursos.setText(
-                "Comida: " + comida +
-                        " | Madeira: " + madeira +
-                        " | Ouro: " + ouro
-        );
-    }
-
-    /**
-     * Configura todos os listeners dos botões.
-     */
     private void configurarListeners() {
         configurarRadioButtons();
         configurarBotoesMovimento();
         configurarBotoesCriacao();
         configurarBotaoAtaque();
         configurarBotaoMontar();
-
     }
 
     private void configurarRadioButtons() {
-        todosRadioButton.addActionListener(e -> {
-
-            if (todosRadioButton.isSelected()) {
-                getTela().setFiltro("TODOS");
-            }
-
-        }
-        );
-
-        aldeaoRadioButton.addActionListener(e -> {
-
-            if (aldeaoRadioButton.isSelected()) {
-                getTela().setFiltro("ALDEAO");
-            }
-        });
-
-        cavaleiroRadioButton.addActionListener(e -> {
-
-
-            if (cavaleiroRadioButton.isSelected()) {
-                getTela().setFiltro("CAVALEIRO");
-            }
-        });
-
-        arqueiroRadioButton.addActionListener(e -> {
-
-
-            if (arqueiroRadioButton.isSelected()) {
-                getTela().setFiltro("ARQUEIRO");
-            }
-        });
+        todosRadioButton.addActionListener(e -> setFiltro("TODOS"));
+        aldeaoRadioButton.addActionListener(e -> setFiltro("ALDEAO"));
+        cavaleiroRadioButton.addActionListener(e -> setFiltro("CAVALEIRO"));
+        arqueiroRadioButton.addActionListener(e -> setFiltro("ARQUEIRO"));
     }
-    private void configurarTeclado() {
 
+    private void setFiltro(String filtro) {
+        if (((AbstractButton) getBotaoFiltro(filtro)).isSelected()) {
+            getTela().setFiltro(filtro);
+        }
+    }
+
+    private AbstractButton getBotaoFiltro(String filtro) {
+        return switch (filtro) {
+            case "ALDEAO" -> aldeaoRadioButton;
+            case "CAVALEIRO" -> cavaleiroRadioButton;
+            case "ARQUEIRO" -> arqueiroRadioButton;
+            default -> todosRadioButton;
+        };
+    }
+
+    private void configurarTeclado() {
         painelPrincipal.setFocusable(true);
         painelPrincipal.requestFocusInWindow();
 
@@ -124,195 +88,99 @@ public class PainelControles {
         });
     }
 
-    private void processarTecla(int keyCode) {
-        switch (keyCode) {
-            // Movimentaçao
-            case KeyEvent.VK_W:
-            case KeyEvent.VK_UP:
-                getTela().movimentarPersonagens(Direcao.CIMA);
-                break;
-            case KeyEvent.VK_S:
-            case KeyEvent.VK_DOWN:
-                getTela().movimentarPersonagens(Direcao.BAIXO);
-                break;
-            case KeyEvent.VK_A:
-            case KeyEvent.VK_LEFT:
-                getTela().movimentarPersonagens(Direcao.ESQUERDA);
-                break;
-            case KeyEvent.VK_D:
-            case KeyEvent.VK_RIGHT:
-                getTela().movimentarPersonagens(Direcao.DIREITA);
-                break;
+    private void processarTecla(int key) {
+        switch (key) {
+            case KeyEvent.VK_W, KeyEvent.VK_UP -> getTela().movimentarPersonagens(Direcao.CIMA);
+            case KeyEvent.VK_S, KeyEvent.VK_DOWN -> getTela().movimentarPersonagens(Direcao.BAIXO);
+            case KeyEvent.VK_A, KeyEvent.VK_LEFT -> getTela().movimentarPersonagens(Direcao.ESQUERDA);
+            case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> getTela().movimentarPersonagens(Direcao.DIREITA);
 
-            // Criar personagens
-            case KeyEvent.VK_1:
-                criarAldeaoAleatorio();
-                break;
-            case KeyEvent.VK_2:
-                criarCavaleiroAleatorio();
-                break;
-            case KeyEvent.VK_3:
-                criarArqueiroAleatorio();
-                break;
+            case KeyEvent.VK_1 -> criarPersonagemAleatorio(ALDEAO);
+            case KeyEvent.VK_2 -> criarPersonagemAleatorio(ARQUEIRO);
+            case KeyEvent.VK_3 -> criarPersonagemAleatorio(CAVALEIRO);
 
-            // Açoes
-            case KeyEvent.VK_SPACE:
-                getTela().atacarPersonagens();
-
-                // Feedback visual no botão de ataque
-                atacarButton.setBackground(Color.RED);
-                atacarButton.setForeground(Color.WHITE);
-                Timer timer = new Timer(200, evt -> {
-                    atacarButton.setBackground(null);
-                    atacarButton.setForeground(null);
-                });
-                timer.setRepeats(false);
-                timer.start();
-                break;
-
-            case KeyEvent.VK_M:
-                getTela().alternarMontaria();
-                break;
-
-            // Filtros - SHIFT para alternar
-            case KeyEvent.VK_SHIFT:
-                alternarFiltroTab();
-                break;
-
-            case KeyEvent.VK_C:
-                getTela().coletarComBotao();
-                break;
+            case KeyEvent.VK_SPACE -> executarAtaque();
+            case KeyEvent.VK_M -> getTela().alternarMontaria();
+            case KeyEvent.VK_SHIFT -> alternarFiltro();
+            case KeyEvent.VK_C -> getTela().coletarComBotao();
         }
     }
 
-    private void alternarFiltroTab() {
+    private void executarAtaque() {
+        getTela().atacarPersonagens();
+        destacarBotao(atacarButton, Color.RED);
+    }
+
+    private void destacarBotao(JButton botao, Color cor) {
+        botao.setBackground(cor);
+        botao.setForeground(Color.WHITE);
+
+        Timer timer = new Timer(200, e -> {
+            botao.setBackground(null);
+            botao.setForeground(null);
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    private void alternarFiltro() {
         if (todosRadioButton.isSelected()) {
             aldeaoRadioButton.setSelected(true);
             getTela().setFiltro("ALDEAO");
-        }
-        else if (aldeaoRadioButton.isSelected()) {
+        } else if (aldeaoRadioButton.isSelected()) {
             cavaleiroRadioButton.setSelected(true);
             getTela().setFiltro("CAVALEIRO");
-        }
-        else if (cavaleiroRadioButton.isSelected()) {
+        } else if (cavaleiroRadioButton.isSelected()) {
             arqueiroRadioButton.setSelected(true);
             getTela().setFiltro("ARQUEIRO");
-        }
-        else if (arqueiroRadioButton.isSelected()) {
-            todosRadioButton.setSelected(true);
-            getTela().setFiltro("TODOS");
-        }
-        else {
-
+        } else {
             todosRadioButton.setSelected(true);
             getTela().setFiltro("TODOS");
         }
     }
 
-
-
-
     private void configurarBotaoMontar() {
-        montarButton.addActionListener(e -> {
-            getTela().alternarMontaria();
-        });
+        montarButton.addActionListener(e -> getTela().alternarMontaria());
     }
 
     private void configurarBotaoAtaque() {
-        atacarButton.addActionListener(e -> {
-            // Executa ataque com filtro
-            getTela().atacarPersonagens();
-
-            // visual
-            atacarButton.setBackground(Color.RED);
-            atacarButton.setForeground(Color.WHITE);
-
-            // Volta ao normal após 0.3 segundos
-            Timer timer = new Timer(200, evt -> {
-                atacarButton.setBackground(null);
-                atacarButton.setForeground(null);
-            });
-            timer.setRepeats(false);
-            timer.start();
-        });
+        atacarButton.addActionListener(e -> executarAtaque());
     }
 
+    private void configurarBotaoColetar() {
+        coletarButton.addActionListener(e -> getTela().coletarComBotao());
+    }
 
-    /**
-     * Configura todos os listeners dos botões de movimento
-     */
     private void configurarBotoesMovimento() {
-         // buttonCima.addActionListener(e -> getTela().movimentarAldeoes(Direcao.CIMA));
-
         buttonCima.addActionListener(e -> getTela().movimentarPersonagens(Direcao.CIMA));
         buttonBaixo.addActionListener(e -> getTela().movimentarPersonagens(Direcao.BAIXO));
         buttonEsquerda.addActionListener(e -> getTela().movimentarPersonagens(Direcao.ESQUERDA));
         buttonDireita.addActionListener(e -> getTela().movimentarPersonagens(Direcao.DIREITA));
     }
 
-    /**
-     * Configura todos os listeners dos botões de criação
-     */
     private void configurarBotoesCriacao() {
-        bCriaAldeao.addActionListener(e -> criarAldeaoAleatorio());
-
-        bCriaArqueiro.addActionListener(e -> criarArqueiroAleatorio());
-
-        bCriaCavaleiro.addActionListener(e -> criarCavaleiroAleatorio());
-
-
+        bCriaAldeao.addActionListener(e -> criarPersonagemAleatorio(TipoPersonagem.ALDEAO));
+        bCriaCavaleiro.addActionListener(e -> criarPersonagemAleatorio(TipoPersonagem.CAVALEIRO));
+        bCriaArqueiro.addActionListener(e -> criarPersonagemAleatorio(TipoPersonagem.ARQUEIRO));
     }
 
-    /**
-     * Configura o listener do botão de ataque
-     */
-//    private void configurarBotaoAtaque() {
-//        atacarButton.addActionListener(e -> getTela().atacarAldeoes());
-//    }
+    private void criarPersonagemAleatorio(TipoPersonagem tipo) {
+        Point p = gerarPosicaoAleatoria();
 
-    /**
-     * Cria um aldeão em posição aleatória na tela.
-     */
-    private void criarAldeaoAleatorio() {
+        switch (tipo) {
+            case ALDEAO -> getTela().criarAldeao(p.x, p.y);
+            case CAVALEIRO -> getTela().criarCavaleiro(p.x, p.y);
+            case ARQUEIRO -> getTela().criarArqueiro(p.x, p.y);
+        }
+    }
+
+    private Point gerarPosicaoAleatoria() {
         final int PADDING = 50;
-        int posX = sorteio.nextInt(painelTela.getWidth() - PADDING);
-        int posY = sorteio.nextInt(painelTela.getHeight() - PADDING);
-
-        getTela().criarAldeao(posX, posY);
+        int x = sorteio.nextInt(Math.max(1, painelTela.getWidth() - PADDING));
+        int y = sorteio.nextInt(Math.max(1, painelTela.getHeight() - PADDING));
+        return new Point(x, y);
     }
 
-    private void criarCavaleiroAleatorio() {
-        final int PADDING = 50;
-        int posX = sorteio.nextInt(painelTela.getWidth() - PADDING);
-        int posY = sorteio.nextInt(painelTela.getHeight() - PADDING);
-
-        getTela().criarCavaleiro(posX, posY);
-    }
-
-    private void criarArqueiroAleatorio() {
-        final int PADDING = 50;
-        int posX = sorteio.nextInt(painelTela.getWidth() - PADDING);
-        int posY = sorteio.nextInt(painelTela.getHeight() - PADDING);
-
-        getTela().criarArqueiro(posX, posY);
-    }
-
-
-    /**
-     * Exibe mensagem informando que a funcionalidade ainda não foi implementada.
-     */
-    private void mostrarMensagemNaoImplementado(String funcionalidade) {
-        JOptionPane.showMessageDialog(
-                painelPrincipal,
-                "Preciso ser implementado",
-                funcionalidade,
-                JOptionPane.INFORMATION_MESSAGE
-        );
-    }
-
-    /**
-     * Obtém a referência da Tela com cast seguro.
-     */
     private Tela getTela() {
         if (tela == null) {
             tela = (Tela) painelTela;
@@ -320,23 +188,15 @@ public class PainelControles {
         return tela;
     }
 
-    /**
-     * Retorna o painel principal para ser adicionado ao JFrame.
-     */
     public JPanel getPainelPrincipal() {
         return painelPrincipal;
     }
 
-    /**
-     * Método chamado pelo Form Designer para criar componentes customizados.
-     * Este método é invocado antes do construtor.
-     */
     private void createUIComponents() {
-        this.painelTela = new Tela();
-
-        // Define o tamanho fixo da área de jogo
-        this.painelTela.setPreferredSize(
-                new Dimension(ifsc.joe.consts.Constantes.LARGURA_TELA, ifsc.joe.consts.Constantes.ALTURA_TELA)
-        );
+        painelTela = new Tela();
+        painelTela.setPreferredSize(new Dimension(
+                ifsc.joe.consts.Constantes.LARGURA_TELA,
+                ifsc.joe.consts.Constantes.ALTURA_TELA
+        ));
     }
 }
